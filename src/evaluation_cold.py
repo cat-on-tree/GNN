@@ -90,11 +90,11 @@ def evaluate_single_model(model, loader, rel_tensor, device, model_name, output_
                 # Scoring
                 src, dst = get_batch_edge_indices(batch)
 
-                # 关键：强制使用 ID 4
+                # 关键：强制使用 ID 14
                 if hasattr(batch, 'input_id'):
                     batch_rel = rel_tensor[batch.input_id.cpu()].to(device)
                 else:
-                    batch_rel = torch.full_like(src, 4, dtype=torch.long)  # Fallback ID 4
+                    batch_rel = torch.full_like(src, 14, dtype=torch.long)  # Fallback ID 14
 
                 scores = model.score(out, src, dst, batch_rel)
                 prob = torch.sigmoid(scores)
@@ -162,7 +162,7 @@ def main():
     sys.stdout = Logger(log_filename)
 
     print("=" * 60)
-    print("🚀 COLD START BENCHMARK (Optimized Relation ID: 4)")
+    print("🚀 COLD START BENCHMARK (Optimized Relation ID: 14)")
     print(f"📅 Timestamp: {timestamp}")
     print("=" * 60)
 
@@ -180,11 +180,11 @@ def main():
     # Load Test Set
     df_cold = pd.read_csv(args.test_path)
 
-    # === 🏆 强制使用扫描出的最佳 ID 4 ===
-    TARGET_ID = 4
+    # === 🏆 强制使用扫描出的最佳 ID 14 ===
+    TARGET_ID = 14
     print(f"🔒 Locking Relation ID to {TARGET_ID} (Best Match for Indication)")
 
-    # 构造一个全为 4 的 tensor
+    # 构造一个全为 14 的 tensor
     rel_tensor = torch.full((len(df_cold),), TARGET_ID, dtype=torch.long)
 
     # Loader
