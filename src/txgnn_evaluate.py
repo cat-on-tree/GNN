@@ -4,8 +4,19 @@ import sys
 import torch
 import pandas as pd
 import numpy as np
-from sklearn.metrics import roc_auc_score, accuracy_score, f1_score, precision_score, recall_score, roc_curve
+import time
+from sklearn.metrics import (
+    roc_auc_score,
+    accuracy_score,
+    f1_score,
+    precision_score,
+    recall_score,
+    roc_curve,
+    average_precision_score,
+    precision_recall_curve
+)
 from tqdm import tqdm
+from scipy import interpolate
 
 # === 路径修正与引用 ===
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -27,11 +38,12 @@ except ImportError:
         sys.exit(1)
 
 
-# === Logger 类 (用于追加日志) ===
+# ==============================================================================
+#  Logger 类
+# ==============================================================================
 class Logger:
     def __init__(self, filepath):
         self.terminal = sys.stdout
-        # mode='a' 表示追加模式，不会覆盖旧日志
         self.log = open(filepath, "a", encoding='utf-8')
 
     def write(self, message):
@@ -43,6 +55,9 @@ class Logger:
         pass
 
 
+# ==============================================================================
+#  核心辅助函数 (插值对齐 + Ranking)
+# ==============================================================================
 def get_batch_edge_indices(batch):
     if hasattr(batch, 'edge_label_index'):
         return batch.edge_label_index[0], batch.edge_label_index[1]
@@ -59,36 +74,108 @@ def get_batch_label(batch):
     raise AttributeError("Batch object has no valid label attribute")
 
 
-def evaluate_detailed(model, loader, rel_tensor, device, dataset_name, save_dir, prefix):
+def interpolate_curve(x, y, num_points=1000):
     """
-    详细评估函数，生成 metrics.txt, raw_pred.csv, roc_curve_data.csv
+    对曲线进行线性插值，使其变为固定的行数 (num_points)。
+    """
+    sorted_indices = np.argsort(x)
+    x_sorted = x[sorted_indices]
+    y_sorted = y[sorted_indices]
+
+    _, unique_indices = np.unique(x_sorted, return_index=True)
+    x_unique = x_sorted[unique_indices]
+    y_unique = y_sorted[unique_indices]
+
+    if len(x_unique) < 2: return x, y
+
+    f = interpolate.interp1d(x_unique, y_unique, kind='linear', fill_value="extrapolate")
+    x_new = np.linspace(min(x_unique), max(x_unique), num_points)
+    y_new = f(x_new)
+    y_new = np.clip(y_new, 0.0, 1.0)
+    return x_new, y_new
+
+
+def calculate_ranking_metrics(y_true, y_score, max_k=None):
+    y_true = np.array(y_true)
+    y_score = np.array(y_score)
+    df = pd.DataFrame({'label': y_true, 'score': y_score})
+    df = df.sort_values('score', ascending=False).reset_index(drop=True)
+
+    total_pos = sum(y_true)
+    total_n = len(y_true)
+    baseline_prec = total_pos / total_n
+
+    if max_k is None: max_k = total_n
+
+    k_list, prec_list, ef_list, cum_gain_list = [], [], [], []
+    cumulative_pos = 0
+
+    limit = min(max_k, len(df))
+    for k in range(1, limit + 1):
+        is_pos = df.loc[k - 1, 'label']
+        cumulative_pos += is_pos
+
+        prec = cumulative_pos / k
+        ef = prec / baseline_prec if baseline_prec > 0 else 0
+        gain = cumulative_pos
+
+        k_list.append(k)
+        prec_list.append(prec)
+        ef_list.append(ef)
+        cum_gain_list.append(gain)
+
+    return pd.DataFrame({
+        'k': k_list,
+        'precision_at_k': prec_list,
+        'enrichment_factor': ef_list,
+        'cumulative_gain': cum_gain_list
+    })
+
+
+# ==============================================================================
+#  详细评估函数
+# ==============================================================================
+def evaluate_detailed(model, loader, rel_tensor, device, dataset_name, save_dir, prefix, force_rel_id=None):
+    """
+    force_rel_id:
+      - None: 使用原本的 Batch input_id (适用于 Standard Test)
+      - Int (e.g. 14): 强制所有关系 ID 为该值 (适用于 Cold/Hard Test)
     """
     model.eval()
     preds = []
     labels = []
 
-    print(f"Evaluating {dataset_name}...")
+    print(f"Evaluating {dataset_name} (Force Rel ID: {force_rel_id})...")
+
     with torch.no_grad():
-        # 为了不破坏日志格式，这里 leave=False
         for batch in tqdm(loader, desc=f"Eval {dataset_name}", leave=False):
             batch = batch.to(device)
             try:
                 n_id = batch.n_id if hasattr(batch, 'n_id') else None
 
-                # Forward
+                # Forward Pass
                 out = model(batch.x, batch.edge_index, batch.edge_type, batch_n_id=n_id)
-
-                # Indices
                 src, dst = get_batch_edge_indices(batch)
 
-                # Relations
-                if hasattr(batch, 'input_id'):
-                    batch_rel = rel_tensor[batch.input_id.cpu()].to(device)
+                # --- 关系 ID 处理逻辑 (关键修正) ---
+                if force_rel_id is not None:
+                    # 1. 如果指定了 ID (针对 Cold/Hard)，强制覆盖
+                    batch_rel = torch.full((len(src),), force_rel_id, dtype=torch.long, device=device)
                 else:
-                    batch_rel = torch.zeros_like(src)
+                    # 2. 如果没指定 (针对 Standard)，尝试使用原有的 Relation
+                    if hasattr(batch, 'input_id'):
+                        batch_rel = rel_tensor[batch.input_id.cpu()].to(device)
+                    else:
+                        # 兜底：如果都没有，才填 0
+                        batch_rel = torch.zeros_like(src)
+                # -----------------------------------
 
                 # Score
-                scores = model.score(out, src, dst, batch_rel)
+                if hasattr(model, 'score'):
+                    scores = model.score(out, src, dst, batch_rel)
+                else:
+                    scores = model.encoder.score(out, src, dst, batch_rel)
+
                 prob = torch.sigmoid(scores)
 
                 preds.append(prob.cpu())
@@ -102,155 +189,163 @@ def evaluate_detailed(model, loader, rel_tensor, device, dataset_name, save_dir,
         print(f"⚠️ Warning: No predictions made for {dataset_name}")
         return
 
-    # 拼接结果
     all_preds = torch.cat(preds).numpy()
     all_targets = torch.cat(labels).numpy()
 
-    # 计算指标
+    # --- Metrics ---
     try:
-        auc = roc_auc_score(all_targets, all_preds)
-    except ValueError:
-        auc = 0.0
+        auroc = roc_auc_score(all_targets, all_preds)
+    except:
+        auroc = 0.0
 
-    pred_labels = (all_preds > 0.5).astype(int)
+    auprc = average_precision_score(all_targets, all_preds)
+
+    pred_labels = (all_preds >= 0.5).astype(int)
     acc = accuracy_score(all_targets, pred_labels)
     f1 = f1_score(all_targets, pred_labels)
     prec = precision_score(all_targets, pred_labels)
     rec = recall_score(all_targets, pred_labels)
 
+    df_ranking = calculate_ranking_metrics(all_targets, all_preds, max_k=len(all_targets))
+
     print(f"\n========== Results: {dataset_name} ==========")
-    print(f"AUC       : {auc:.4f}")
+    print(f"AUPRC     : {auprc:.4f}")
+    print(f"AUROC     : {auroc:.4f}")
     print(f"Accuracy  : {acc:.4f}")
-    print(f"F1 Score  : {f1:.4f}")
+    print("-" * 30)
+
+    top_ks = [10, 50, 100]
+    top_k_vals = {}
+    for k in top_ks:
+        if k <= len(df_ranking):
+            val = df_ranking.loc[k - 1, 'precision_at_k']
+            print(f"Top-{k:<3} Prec: {val:.4f}")
+            top_k_vals[k] = val
+        else:
+            top_k_vals[k] = 0.0
     print("=" * 40)
 
-    # === 保存详细文件 ===
+    # --- Save Artifacts ---
     os.makedirs(save_dir, exist_ok=True)
     base_path = os.path.join(save_dir, prefix)
 
-    # 1. 保存 Metrics TXT
-    with open(f"{base_path}_metrics.txt", "w") as f:
+    # Summary
+    with open(f"{base_path}_summary.txt", "w", encoding='utf-8') as f:
         f.write(f"Dataset: {dataset_name}\n")
-        f.write(f"AUC: {auc:.6f}\n")
-        f.write(f"Accuracy: {acc:.6f}\n")
-        f.write(f"F1 Score: {f1:.6f}\n")
-        f.write(f"Precision: {prec:.6f}\n")
-        f.write(f"Recall: {rec:.6f}\n")
-    print(f"📄 Saved metrics to {base_path}_metrics.txt")
+        f.write(f"Relation ID Used: {force_rel_id}\n")
+        f.write(f"Total Samples: {len(all_targets)}\n")
+        f.write(f"Pos Ratio: {sum(all_targets) / len(all_targets):.4f}\n\n")
+        f.write(f"AUROC: {auroc:.6f}\n")
+        f.write(f"AUPRC: {auprc:.6f}\n")
+        f.write(f"Accuracy (th=0.5): {acc:.6f}\n")
+        f.write(f"F1 Score (th=0.5): {f1:.6f}\n")
+        f.write(f"Precision (th=0.5): {prec:.6f}\n")
+        f.write(f"Recall (th=0.5): {rec:.6f}\n\n")
+        f.write("=== Top-K Metrics ===\n")
+        for k in top_ks:
+            f.write(f"Precision @ Top-{k}: {top_k_vals[k]:.6f}\n")
 
-    # 2. 保存 Raw Predictions CSV (y_true, y_score)
-    raw_df = pd.DataFrame({
-        'y_true': all_targets,
-        'y_score': all_preds
-    })
-    raw_df.to_csv(f"{base_path}_raw_pred.csv", index=False)
-    print(f"📄 Saved raw predictions to {base_path}_raw_pred.csv")
+    # Raw Preds
+    pd.DataFrame({'y_true': all_targets, 'y_score': all_preds}).to_csv(f"{base_path}_raw_pred.csv", index=False)
 
-    # 3. 保存 ROC Curve Data CSV
-    fpr, tpr, thresholds = roc_curve(all_targets, all_preds)
-    roc_df = pd.DataFrame({
-        'FPR (1-Specificity)': fpr,
-        'TPR (Sensitivity)': tpr,
-        'Threshold': thresholds
-    })
-    roc_df.to_csv(f"{base_path}_roc_curve_data.csv", index=False)
-    print(f"📄 Saved ROC curve data to {base_path}_roc_curve_data.csv")
+    # ROC (Aligned)
+    fpr, tpr, _ = roc_curve(all_targets, all_preds)
+    fpr_i, tpr_i = interpolate_curve(fpr, tpr, 1000)
+    pd.DataFrame({'FPR': fpr_i, 'TPR': tpr_i}).to_csv(f"{base_path}_roc_curve.csv", index=False)
+
+    # PRC (Aligned)
+    precs, recs, _ = precision_recall_curve(all_targets, all_preds)
+    recs_i, precs_i = interpolate_curve(recs, precs, 1000)
+    pd.DataFrame({'Recall': recs_i, 'Precision': precs_i}).to_csv(f"{base_path}_prc_curve.csv", index=False)
+
+    # EF & CumGain
+    df_rank_20 = df_ranking.head(20).copy()
+    df_rank_20[['k', 'enrichment_factor']].to_csv(f"{base_path}_ef_top20.csv", index=False)
+    df_rank_20[['k', 'cumulative_gain']].to_csv(f"{base_path}_cumgain_top20.csv", index=False)
+
+    # Top-K Bar
+    pd.DataFrame({'Top_K': top_ks, 'Precision': [top_k_vals[k] for k in top_ks]}).to_csv(f"{base_path}_topk_bar.csv",
+                                                                                         index=False)
+
+    print(f"✨ Artifacts saved to {os.path.dirname(base_path)}")
 
 
 def main():
     parser = argparse.ArgumentParser()
-    # 关键路径配置
-    parser.add_argument('--model_path', type=str, default='../model/TxGNN/txgnn_finetuned_best.pt',
-                        help='Path to the fine-tuned model weights')
-    parser.add_argument('--sim_path', type=str, default='../model/TxGNN/txgnn_sim_data.pt',
-                        help='Path to similarity matrix')
+    parser.add_argument('--model_path', type=str, default='../model/TxGNN/txgnn_finetuned_best.pt')
+    parser.add_argument('--sim_path', type=str, default='../model/TxGNN/txgnn_sim_data.pt')
     parser.add_argument('--device', type=str, default='cuda')
+    parser.add_argument('--target_rel_id', type=int, default=14, help='Forced ID for Cold/Hard sets')
     args = parser.parse_args()
 
-    # === 自动配置日志 ===
+    # Log Setup
     log_dir = "../logs"
     os.makedirs(log_dir, exist_ok=True)
-
-    # 寻找最新的 TxGNN 日志文件
-    logs = [f for f in os.listdir(log_dir) if f.startswith("TxGNN_") and f.endswith(".log")]
-
-    if logs:
-        # 按修改时间排序，找最新的
-        latest_log = max(logs, key=lambda x: os.path.getmtime(os.path.join(log_dir, x)))
-        log_path = os.path.join(log_dir, latest_log)
-        print(f"📝 Found existing log: {log_path}. Appending evaluation results...")
-    else:
-        # 如果没找到，新建一个
-        log_path = os.path.join(log_dir, "TxGNN_eval_only.log")
-        print(f"📝 No existing log found. Creating new log: {log_path}")
-
-    # 重定向 stdout 到 Logger
-    sys.stdout = Logger(log_path)
+    sys.stdout = Logger(os.path.join(log_dir, f"TxGNN_Final_Eval_{int(time.time())}.log"))
 
     print("\n" + "=" * 50)
-    print("🚀 RESUMING PIPELINE: FINAL EVALUATION")
-    print(f"📅 Time: {pd.Timestamp.now()}")
+    print("🚀 RESUMING PIPELINE: FINAL EVALUATION (Corrected Logic)")
     print("=" * 50)
 
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
-    print(f"Using device: {device}")
 
-    # 结果保存目录
-    eval_save_dir = "../data/evaluation/TxGNN"
-    os.makedirs(eval_save_dir, exist_ok=True)
-
-    # 1. 加载数据
+    # Load Data
     nodes_path = '../data/benchmark/PrimeKG/nodes.csv'
     train_path = '../data/benchmark/PrimeKG/train_edges.csv'
     val_path = '../data/benchmark/PrimeKG/val_edges.csv'
     test_path = '../data/benchmark/Kaggle_drug_repositioning/test.csv'
-    test_hard_path = '../data/benchmark/Kaggle_drug_repositioning/test_hard.csv'  # 确保这里路径正确
+    test_hard_path = '../data/benchmark/Kaggle_drug_repositioning/test_hard.csv'
+    test_cold_path = '../data/benchmark/Kaggle_drug_repositioning/test_cold.csv'
 
     print("Loading data...")
     data, datasets, num_nodes, num_rels, _ = load_and_build_data(
-        nodes_path, train_path, val_path, test_path, test_hard_path
+        nodes_path, train_path, val_path, test_path,
+        test_hard_path=test_hard_path, test_cold_path=test_cold_path
     )
 
-    # 提取 Rel Tensors
+    # Rel Tensors
     test_rel_tensor = datasets['test'][2]
     hard_rel_tensor = datasets['test_hard'][2] if datasets['test_hard'] else None
+    cold_rel_tensor = datasets['test_cold'][2] if 'test_cold' in datasets and datasets['test_cold'] else None
 
-    # 2. 初始化并加载模型
+    # Model
     print("Initializing TxGNN Model...")
     model = TxGNNModel(num_nodes, 128, num_rels, device=args.device).to(device)
     model.load_similarity(args.sim_path)
-
-    print(f"Loading Fine-tuned Weights from {args.model_path}...")
-    if not os.path.exists(args.model_path):
-        print(f"❌ Error: Model file not found at {args.model_path}")
-        return
-
     model.load_state_dict(torch.load(args.model_path, map_location=device))
-    print("✅ Model Loaded Successfully.")
+    print("✅ Model Loaded.")
 
-    # 3. 创建 Loaders
-    print("Creating Loaders...")
-    # 使用 [20, 10] 或 [-1] 均可，这里保持一致性
-    test_loader = create_loader(data, datasets['test'], batch_size=2048, num_neighbors=[20, 10], shuffle=False)
-    hard_loader = create_loader(data, datasets['test_hard'], batch_size=2048, num_neighbors=[20, 10], shuffle=False)
+    # Loaders
+    batch_size = 2048
+    test_loader = create_loader(data, datasets['test'], batch_size, [20, 10], False)
+    hard_loader = create_loader(data, datasets['test_hard'], batch_size, [20, 10], False) if datasets[
+        'test_hard'] else None
+    cold_loader = create_loader(data, datasets['test_cold'], batch_size, [20, 10], False) if datasets[
+        'test_cold'] else None
 
-    # 4. 执行评估
-    print("\n" + "=" * 10 + " Starting Final Evaluation " + "=" * 10)
+    save_dir = "../data/evaluation/TxGNN"
 
-    # Standard Test
+    # --- 1. Standard Test: 使用原始 ID (force_rel_id=None) ---
+    print("\n>>> Running Standard Test (Original IDs)...")
     evaluate_detailed(model, test_loader, test_rel_tensor, device,
-                      dataset_name="Standard Test Set",
-                      save_dir=eval_save_dir,
-                      prefix="standard")  # 生成 standard_metrics.txt 等
+                      "Standard Test Set", save_dir, "standard",
+                      force_rel_id=None)  # <--- 关键点：Standard 不强制 ID
 
-    # Hard Test
+    # --- 2. Hard Test: 强制使用 ID ---
     if hard_loader:
+        print(f"\n>>> Running Hard Test (Force ID 7)...")
         evaluate_detailed(model, hard_loader, hard_rel_tensor, device,
-                          dataset_name="Hard Test Set",
-                          save_dir=eval_save_dir,
-                          prefix="hard")  # 生成 hard_metrics.txt 等
+                          "Hard Test Set", save_dir, "hard",
+                          force_rel_id=7) # <--- 修改为 7
 
-    print(f"\n✨ All Evaluation Artifacts saved to {eval_save_dir}")
+    # --- 3. Cold Test: 强制使用 ID 14 (保持不变) ---
+    if cold_loader:
+        print(f"\n>>> Running Cold Test (Force ID 14)...")
+        evaluate_detailed(model, cold_loader, cold_rel_tensor, device,
+                          "Cold Start Test Set", save_dir, "cold",
+                          force_rel_id=14) # <--- 保持 14
+
+    print(f"\n✨ All Evaluation Artifacts saved to {save_dir}")
 
 
 if __name__ == "__main__":

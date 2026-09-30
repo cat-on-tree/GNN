@@ -2,76 +2,199 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 import os
-
-# 读取现有数据
-train_df = pd.read_csv("../data/benchmark/PrimeKG/train_edges.csv")
-test_df_easy = pd.read_csv("../data/benchmark/Kaggle_drug_repositioning/test.csv")
-nodes_df = pd.read_csv("../data/benchmark/PrimeKG/nodes.csv")
-save_dir = "../data/benchmark/Kaggle_drug_repositioning"
-
-# 1. 统计度数 (基于全量训练数据)
-all_nodes = pd.concat([train_df['x_index'], train_df['y_index']])
-degrees = all_nodes.value_counts().to_dict()
-
-# 2. 准备候选池 (只取 Indication 相关的疾病节点)
-# 这里我们偷个懒，直接用 test_easy 里的 target 节点作为候选池，因为它们都是疾病
-# 更好的做法是像之前一样从 indication 关系里提取
-candidate_nodes = test_df_easy[test_df_easy['label'] == 1]['y_index'].unique()
-candidate_degrees = {n: degrees.get(n, 0) for n in candidate_nodes}
-
-# 3. 对候选节点进行分桶 (Binning)
-# 按度数分为 10 个桶
-degree_values = list(candidate_degrees.values())
-bins = np.percentile(degree_values, np.linspace(0, 100, 11))
-# 确保 bins 唯一
-bins = np.unique(bins)
-
 from collections import defaultdict
 
-degree_buckets = defaultdict(list)
+# ==========================================
+# 0. 配置与路径
+# ==========================================
+# 期望配置
+NUM_POS_SAMPLES = 100  # 期望的正样本数量
+NEG_POS_RATIO = 10  # 负正比例 (1:10)
+SEED = 42
 
-for node, deg in candidate_degrees.items():
-    # 找到所属的桶
-    bucket_idx = np.digitize(deg, bins) - 1
-    degree_buckets[bucket_idx].append(node)
+# 路径
+input_clean_pos = "../../data/benchmark/Kaggle_drug_repositioning/full_mapping_without_na.csv"  # 正样本来源
+input_raw_full = "../../data/benchmark/Kaggle_drug_repositioning/full_mapping.csv"  # Ban Set 来源
+train_path = "../../data/benchmark/PrimeKG/train_edges.csv"
+val_path = "../../data/benchmark/PrimeKG/val_edges.csv"
+nodes_path = "../../data/benchmark/PrimeKG/nodes.csv"
+save_dir = "../../data/benchmark/Kaggle_drug_repositioning"
+os.makedirs(save_dir, exist_ok=True)
 
-# 4. 生成 Hard Test Set
-# 保持正样本不变，只替换负样本
-test_pos = test_df_easy[test_df_easy['label'] == 1].copy()
-rng = np.random.default_rng(42)
+rng = np.random.default_rng(SEED)
+
+print(f"🚀 Generating STRICT Degree-Matched Test Set...")
+print(f"   Target: {NUM_POS_SAMPLES} Positives, Ratio 1:{NEG_POS_RATIO}")
+
+# ==========================================
+# 1. 准备节点类型与度数信息
+# ==========================================
+print(">>> Step 1: Loading Nodes & Calculating Degrees...")
+df_nodes = pd.read_csv(nodes_path)
+valid_disease_ids = set(df_nodes[df_nodes['node_type'] == 'disease']['node_index'].unique())
+valid_drug_ids = set(df_nodes[df_nodes['node_type'] == 'drug']['node_index'].unique())
+
+# 读取训练/验证集 (用于计算度数 + Ban Set)
+df_train = pd.read_csv(train_path)
+df_val = pd.read_csv(val_path)
+
+# 计算度数 (仅基于已知图谱 Train+Val)
+all_known_edges = pd.concat([df_train, df_val])
+all_nodes_series = pd.concat([all_known_edges['x_index'], all_known_edges['y_index']])
+degrees = all_nodes_series.value_counts().to_dict()
+
+# 构建 {度数: [Valid Disease List]} 映射表
+degree_lookup = defaultdict(list)
+for node in valid_disease_ids:
+    d = degrees.get(node, 0)
+    degree_lookup[d].append(node)
+# 转 numpy array 加速
+degree_lookup_np = {k: np.array(v) for k, v in degree_lookup.items()}
+
+# ==========================================
+# 2. 构建超级禁忌表 (Global Ban Set)
+# ==========================================
+print(">>> Step 2: Building Comprehensive Global Ban Set...")
+
+# A. 训练集 + 验证集
+ban_sources = [df_train, df_val]
+
+# B. 全量原始数据 (用于排除潜在假负例)
+# 关键处理：只有 x_index 和 y_index 都存在的行才有资格进入 Ban Set
+df_raw = pd.read_csv(input_raw_full)
+df_raw_valid = df_raw.dropna(subset=['x_index', 'y_index']).copy()
+# 确保类型为 int，以便后续匹配
+df_raw_valid['x_index'] = df_raw_valid['x_index'].astype(int)
+df_raw_valid['y_index'] = df_raw_valid['y_index'].astype(int)
+ban_sources.append(df_raw_valid)
+
+# 合并所有源
+df_ban_all = pd.concat(ban_sources)
+
+# 构建 Set: (min(u,v), max(u,v)) 无向匹配
+# 这样最安全，不管谁是头谁是尾，只要连过就不做负样本
+global_ban_set = set(zip(
+    df_ban_all[['x_index', 'y_index']].min(axis=1),
+    df_ban_all[['x_index', 'y_index']].max(axis=1)
+))
+
+print(f"   Total unique edges banned: {len(global_ban_set)}")
+
+# ==========================================
+# 3. 采样正样本 (来自 Clean Source)
+# ==========================================
+print(f">>> Step 3: Sampling {NUM_POS_SAMPLES} Positives...")
+df_clean = pd.read_csv(input_clean_pos)
+df_clean['x_index'] = df_clean['x_index'].astype(int)
+df_clean['y_index'] = df_clean['y_index'].astype(int)
+
+# 过滤 1: 类型正确 (Drug -> Disease)
+mask_type = df_clean['x_index'].isin(valid_drug_ids) & df_clean['y_index'].isin(valid_disease_ids)
+candidates = df_clean[mask_type].copy()
+
+# 过滤 2: 不能在 Train/Val 中 (防止数据泄漏)
+# 这里用一个简单的 set 查重
+train_val_pairs = set(zip(df_train['x_index'], df_train['y_index'])) | \
+                  set(zip(df_val['x_index'], df_val['y_index']))
+
+
+def is_leak(row):
+    return (row['x_index'], row['y_index']) in train_val_pairs
+
+
+candidates['is_leak'] = candidates.apply(is_leak, axis=1)
+clean_candidates = candidates[~candidates['is_leak']].copy()
+
+# 采样
+if len(clean_candidates) > NUM_POS_SAMPLES:
+    test_pos = clean_candidates.sample(n=NUM_POS_SAMPLES, random_state=SEED).reset_index(drop=True)
+else:
+    test_pos = clean_candidates.reset_index(drop=True)
+
+# 格式化正样本
+test_pos = test_pos[['x_index', 'y_index']].copy()
+test_pos['label'] = 1
+test_pos['relation'] = 'indication'
+
+print(f"   Final Positives: {len(test_pos)}")
+
+# ==========================================
+# 4. 生成度匹配负样本 (1:N)
+# ==========================================
+target_neg_count = len(test_pos) * NEG_POS_RATIO
+print(f">>> Step 4: Generating Negatives (Target: {target_neg_count})...")
 
 hard_neg_rows = []
+tolerance_levels = [0.0, 0.05, 0.1, 0.2, 0.5, 1.0]
 
-print("Generating Degree-Matched Negatives...")
 for _, row in tqdm(test_pos.iterrows(), total=len(test_pos)):
-    src = row['x_index']
-    dst_real = row['y_index']
-    rel = row['relation']
+    src = int(row['x_index'])  # Drug
+    dst_real = int(row['y_index'])  # Disease
 
-    real_degree = degrees.get(dst_real, 0)
-
-    # 找到对应的度数桶
-    bucket_idx = np.digitize(real_degree, bins) - 1
-    # 修正边界
-    bucket_idx = max(0, min(bucket_idx, len(bins) - 2))
-
-    # 从同一个桶里选负样本 (度数相近)
-    candidates = degree_buckets[bucket_idx]
-
-    # 简单的冲突检测 (这里简化了，实际应该查 Global Ban)
-    # 假设桶里只要选个不一样的就行
-    fake_dst = rng.choice(candidates)
+    target_deg = degrees.get(dst_real, 0)
+    created_count = 0
     retry = 0
-    while fake_dst == dst_real and retry < 10:
-        fake_dst = rng.choice(candidates)
-        retry += 1
 
-    hard_neg_rows.append([rel, src, fake_dst, 0])
+    # 尝试生成 N 个负样本
+    while created_count < NEG_POS_RATIO and retry < 50:
+        found_one = False
 
-test_neg_hard = pd.DataFrame(hard_neg_rows, columns=['relation', 'x_index', 'y_index', 'label'])
+        for tol in tolerance_levels:
+            min_d = int(target_deg * (1 - tol))
+            max_d = int(target_deg * (1 + tol))
 
+            candidates_list = [degree_lookup_np[d] for d in range(min_d, max_d + 1) if d in degree_lookup_np]
+            if not candidates_list: continue
+
+            pool = np.concatenate(candidates_list)
+
+            # 在当前容忍度下尝试 10 次
+            for _ in range(10):
+                fake_dst = int(rng.choice(pool))
+
+                if fake_dst == dst_real: continue
+
+                # 🔥 查 Global Ban Set
+                check_pair = (min(src, fake_dst), max(src, fake_dst))
+
+                if check_pair not in global_ban_set:
+                    hard_neg_rows.append({
+                        'relation': 'indication',
+                        'x_index': src,
+                        'y_index': fake_dst,
+                        'label': 0
+                    })
+                    created_count += 1
+                    found_one = True
+                    break
+
+            if found_one: break  # 跳出 tol 循环，生成下一个负样本
+
+        if not found_one: retry += 1
+
+test_neg = pd.DataFrame(hard_neg_rows)
+
+# ==========================================
+# 5. 保存
+# ==========================================
+print(">>> Step 5: Saving...")
 # 合并
-test_hard = pd.concat([test_pos, test_neg_hard], ignore_index=True).sample(frac=1, random_state=42)
-test_hard.to_csv(os.path.join(save_dir, "test_hard.csv"), index=False)
+test_final = pd.concat([test_pos, test_neg], ignore_index=True)
+test_final = test_final.sample(frac=1, random_state=SEED).reset_index(drop=True)
 
-print(f"✅ Hard Test Set saved! Use this to challenge your models.")
+# 确保列顺序和类型
+cols = ['relation', 'x_index', 'y_index', 'label']
+test_final = test_final[cols]
+test_final['x_index'] = test_final['x_index'].astype(int)
+test_final['y_index'] = test_final['y_index'].astype(int)
+test_final['label'] = test_final['label'].astype(int)
+
+# 保存
+filename = "test_hard.csv"
+output_path = os.path.join(save_dir, filename)
+test_final.to_csv(output_path, index=False)
+
+print(f"🎉 Success! Saved to {output_path}")
+print(f"   Positives: {len(test_pos)}")
+print(f"   Negatives: {len(test_neg)}")
+print(f"   Ratio: 1:{len(test_neg) / len(test_pos):.2f}")

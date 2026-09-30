@@ -151,7 +151,7 @@ def main():
     parser.add_argument('--han_path', default='../model/HAN/han_best.pt')
     parser.add_argument('--hgt_path', default='../model/HGT/hgt_best.pt')
     parser.add_argument('--sim_path', default='../model/TxGNN/txgnn_sim_data.pt')
-    parser.add_argument('--test_path', default='../data/benchmark/Kaggle_drug_repositioning/test_cold.csv')
+    parser.add_argument('--test_path', default='../data/benchmark/PrimeKG/test_cold.csv')
     parser.add_argument('--device', default='cuda')
     args = parser.parse_args()
 
@@ -162,7 +162,7 @@ def main():
     sys.stdout = Logger(log_filename)
 
     print("=" * 60)
-    print("🚀 COLD START BENCHMARK (Optimized Relation ID: 14)")
+    print("🚀 COLD START BENCHMARK (Optimized Relation ID: 14")
     print(f"📅 Timestamp: {timestamp}")
     print("=" * 60)
 
