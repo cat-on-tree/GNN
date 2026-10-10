@@ -1348,342 +1348,6 @@ Graph group: graph_unpresent
 Negative strategy: normal
 Negative ratio: 1:1
 Number of files: 5
-AUROC: 0.704972 ± 0.011366
-AUPRC: 0.726149 ± 0.010867
-NDCG: 0.949731 ± 0.003049
-MRR: 1.000000 ± 0.000000
-Top10 recall: 0.019200 ± 0.001095
-Top10 precision: 0.960000 ± 0.054772
-NDCG@10: 0.962085 ± 0.051918
-Top50 recall: 0.091600 ± 0.002966
-Top50 precision: 0.916000 ± 0.029665
-NDCG@50: 0.924719 ± 0.027288
-Top100 recall: 0.178000 ± 0.005831
-Top100 precision: 0.890000 ± 0.029155
-NDCG@100: 0.901456 ± 0.025148
-Top150 recall: 0.253600 ± 0.005177
-Top150 precision: 0.845333 ± 0.017256
-NDCG@150: 0.864447 ± 0.013819
-Top200 recall: 0.322800 ± 0.006419
-Top200 precision: 0.807000 ± 0.016047
-NDCG@200: 0.831114 ± 0.011879
-Accuracy: 0.599200 ± 0.005541
-F1: 0.375293 ± 0.009351
-MCC: 0.284610 ± 0.016501
---------------------------------------------------------------------------------
-Model: qwen3-8b-kto
-Graph group: graph_unpresent
-Negative strategy: normal
-Negative ratio: 1:4
-Number of files: 5
-AUROC: 0.699312 ± 0.003070
-AUPRC: 0.435455 ± 0.010355
-NDCG: 0.872008 ± 0.004678
-MRR: 1.000000 ± 0.000000
-Top10 recall: 0.017200 ± 0.001095
-Top10 precision: 0.860000 ± 0.054772
-NDCG@10: 0.889134 ± 0.060263
-Top50 recall: 0.072800 ± 0.003033
-Top50 precision: 0.728000 ± 0.030332
-NDCG@50: 0.765256 ± 0.028439
-Top100 recall: 0.136000 ± 0.003742
-Top100 precision: 0.680000 ± 0.018708
-NDCG@100: 0.715142 ± 0.024967
-Top150 recall: 0.188400 ± 0.008649
-Top150 precision: 0.628000 ± 0.028829
-NDCG@150: 0.666404 ± 0.025587
-Top200 recall: 0.234400 ± 0.008414
-Top200 precision: 0.586000 ± 0.021036
-NDCG@200: 0.626739 ± 0.019366
-Accuracy: 0.814320 ± 0.003167
-F1: 0.343428 ± 0.009272
-MCC: 0.290383 ± 0.012995
---------------------------------------------------------------------------------
-Model: qwen3-8b-kto
-Graph group: graph_unpresent
-Negative strategy: normal
-Negative ratio: 1:9
-Number of files: 5
-AUROC: 0.699788 ± 0.004709
-AUPRC: 0.278699 ± 0.009593
-NDCG: 0.808625 ± 0.006065
-MRR: 1.000000 ± 0.000000
-Top10 recall: 0.015600 ± 0.001673
-Top10 precision: 0.780000 ± 0.083666
-NDCG@10: 0.805571 ± 0.096080
-Top50 recall: 0.057200 ± 0.006573
-Top50 precision: 0.572000 ± 0.065727
-NDCG@50: 0.623198 ± 0.059886
-Top100 recall: 0.107200 ± 0.007430
-Top100 precision: 0.536000 ± 0.037148
-NDCG@100: 0.577179 ± 0.040822
-Top150 recall: 0.146800 ± 0.004817
-Top150 precision: 0.489333 ± 0.016055
-NDCG@150: 0.530882 ± 0.021835
-Top200 recall: 0.180400 ± 0.007403
-Top200 precision: 0.451000 ± 0.018507
-NDCG@200: 0.493321 ± 0.018987
-Accuracy: 0.883200 ± 0.003555
-F1: 0.290354 ± 0.010181
-MCC: 0.236596 ± 0.014074
---------------------------------------------------------------------------------
-Model: qwen3-8b-kto
-Graph group: pyg_style
-Negative strategy: degree_matched_head
-Negative ratio: 1:1
-Number of files: 5
-AUROC: 0.674510 ± 0.009509
-AUPRC: 0.691060 ± 0.011218
-NDCG: 0.941529 ± 0.001503
-MRR: 1.000000 ± 0.000000
-Top10 recall: 0.018800 ± 0.001095
-Top10 precision: 0.940000 ± 0.054772
-NDCG@10: 0.950067 ± 0.048517
-Top50 recall: 0.086800 ± 0.004147
-Top50 precision: 0.868000 ± 0.041473
-NDCG@50: 0.887249 ± 0.029240
-Top100 recall: 0.169200 ± 0.004382
-Top100 precision: 0.846000 ± 0.021909
-NDCG@100: 0.862752 ± 0.015404
-Top150 recall: 0.243200 ± 0.010826
-Top150 precision: 0.810667 ± 0.036086
-NDCG@150: 0.831420 ± 0.024746
-Top200 recall: 0.304800 ± 0.007823
-Top200 precision: 0.762000 ± 0.019558
-NDCG@200: 0.790160 ± 0.014611
-Accuracy: 0.578200 ± 0.009628
-F1: 0.315646 ± 0.025009
-MCC: 0.243326 ± 0.023089
---------------------------------------------------------------------------------
-Model: qwen3-8b-kto
-Graph group: pyg_style
-Negative strategy: degree_matched_head
-Negative ratio: 1:4
-Number of files: 5
-AUROC: 0.672403 ± 0.007721
-AUPRC: 0.382729 ± 0.012110
-NDCG: 0.847435 ± 0.007247
-MRR: 0.800000 ± 0.273861
-Top10 recall: 0.014000 ± 0.002449
-Top10 precision: 0.700000 ± 0.122474
-NDCG@10: 0.683184 ± 0.148641
-Top50 recall: 0.068000 ± 0.004000
-Top50 precision: 0.680000 ± 0.040000
-NDCG@50: 0.678359 ± 0.044090
-Top100 recall: 0.118800 ± 0.006419
-Top100 precision: 0.594000 ± 0.032094
-NDCG@100: 0.612704 ± 0.037139
-Top150 recall: 0.167600 ± 0.011261
-Top150 precision: 0.558667 ± 0.037535
-NDCG@150: 0.581025 ± 0.032146
-Top200 recall: 0.212800 ± 0.013461
-Top200 precision: 0.532000 ± 0.033653
-NDCG@200: 0.556250 ± 0.024829
-Accuracy: 0.806480 ± 0.005589
-F1: 0.285009 ± 0.029624
-MCC: 0.238238 ± 0.031125
---------------------------------------------------------------------------------
-Model: qwen3-8b-kto
-Graph group: pyg_style
-Negative strategy: degree_matched_head
-Negative ratio: 1:9
-Number of files: 5
-AUROC: 0.670546 ± 0.008734
-AUPRC: 0.239729 ± 0.010131
-NDCG: 0.787023 ± 0.007250
-MRR: 0.800000 ± 0.273861
-Top10 recall: 0.015200 ± 0.001095
-Top10 precision: 0.760000 ± 0.054772
-NDCG@10: 0.734743 ± 0.072935
-Top50 recall: 0.054800 ± 0.007694
-Top50 precision: 0.548000 ± 0.076942
-NDCG@50: 0.578986 ± 0.079493
-Top100 recall: 0.092000 ± 0.005657
-Top100 precision: 0.460000 ± 0.028284
-NDCG@100: 0.499081 ± 0.029343
-Top150 recall: 0.125600 ± 0.008173
-Top150 precision: 0.418667 ± 0.027244
-NDCG@150: 0.457348 ± 0.028265
-Top200 recall: 0.154400 ± 0.012116
-Top200 precision: 0.386000 ± 0.030290
-NDCG@200: 0.424628 ± 0.027903
-Accuracy: 0.885120 ± 0.002587
-F1: 0.252392 ± 0.021482
-MCC: 0.207667 ± 0.019042
---------------------------------------------------------------------------------
-Model: qwen3-8b-kto
-Graph group: pyg_style
-Negative strategy: degree_matched_tail
-Negative ratio: 1:1
-Number of files: 5
-AUROC: 0.621748 ± 0.006394
-AUPRC: 0.650403 ± 0.003160
-NDCG: 0.931553 ± 0.002967
-MRR: 1.000000 ± 0.000000
-Top10 recall: 0.018400 ± 0.002191
-Top10 precision: 0.920000 ± 0.109545
-NDCG@10: 0.922355 ± 0.106792
-Top50 recall: 0.087600 ± 0.004336
-Top50 precision: 0.876000 ± 0.043359
-NDCG@50: 0.887304 ± 0.044285
-Top100 recall: 0.163600 ± 0.005727
-Top100 precision: 0.818000 ± 0.028636
-NDCG@100: 0.838161 ± 0.025326
-Top150 recall: 0.226400 ± 0.006066
-Top150 precision: 0.754667 ± 0.020221
-NDCG@150: 0.785041 ± 0.022390
-Top200 recall: 0.286000 ± 0.003742
-Top200 precision: 0.715000 ± 0.009354
-NDCG@200: 0.748713 ± 0.007489
-Accuracy: 0.570600 ± 0.009762
-F1: 0.306239 ± 0.030286
-MCC: 0.217441 ± 0.021231
---------------------------------------------------------------------------------
-Model: qwen3-8b-kto
-Graph group: pyg_style
-Negative strategy: degree_matched_tail
-Negative ratio: 1:4
-Number of files: 5
-AUROC: 0.625037 ± 0.008779
-AUPRC: 0.359536 ± 0.015951
-NDCG: 0.840375 ± 0.012856
-MRR: 0.640000 ± 0.350714
-Top10 recall: 0.016800 ± 0.003347
-Top10 precision: 0.840000 ± 0.167332
-NDCG@10: 0.768853 ± 0.237658
-Top50 recall: 0.070800 ± 0.006723
-Top50 precision: 0.708000 ± 0.067231
-NDCG@50: 0.717194 ± 0.108364
-Top100 recall: 0.118800 ± 0.009338
-Top100 precision: 0.594000 ± 0.046690
-NDCG@100: 0.626501 ± 0.063135
-Top150 recall: 0.165600 ± 0.011524
-Top150 precision: 0.552000 ± 0.038413
-NDCG@150: 0.586116 ± 0.046178
-Top200 recall: 0.200400 ± 0.009099
-Top200 precision: 0.501000 ± 0.022749
-NDCG@200: 0.540198 ± 0.035787
-Accuracy: 0.801920 ± 0.003913
-F1: 0.278746 ± 0.030514
-MCC: 0.221993 ± 0.026750
---------------------------------------------------------------------------------
-Model: qwen3-8b-kto
-Graph group: pyg_style
-Negative strategy: degree_matched_tail
-Negative ratio: 1:9
-Number of files: 5
-AUROC: 0.625792 ± 0.006791
-AUPRC: 0.210263 ± 0.015336
-NDCG: 0.768501 ± 0.008253
-MRR: 0.800000 ± 0.273861
-Top10 recall: 0.010800 ± 0.002683
-Top10 precision: 0.540000 ± 0.134164
-NDCG@10: 0.549741 ± 0.156868
-Top50 recall: 0.053200 ± 0.009445
-Top50 precision: 0.532000 ± 0.094446
-NDCG@50: 0.541751 ± 0.051819
-Top100 recall: 0.088800 ± 0.012931
-Top100 precision: 0.444000 ± 0.064653
-NDCG@100: 0.471063 ± 0.042370
-Top150 recall: 0.116000 ± 0.017776
-Top150 precision: 0.386667 ± 0.059255
-NDCG@150: 0.420326 ± 0.045285
-Top200 recall: 0.140800 ± 0.022118
-Top200 precision: 0.352000 ± 0.055295
-NDCG@200: 0.387118 ± 0.043321
-Accuracy: 0.875160 ± 0.004248
-F1: 0.235443 ± 0.027165
-MCC: 0.176584 ± 0.029296
---------------------------------------------------------------------------------
-Model: qwen3-8b-kto
-Graph group: pyg_style
-Negative strategy: normal
-Negative ratio: 1:1
-Number of files: 5
-AUROC: 0.616754 ± 0.003930
-AUPRC: 0.654938 ± 0.007729
-NDCG: 0.935216 ± 0.002481
-MRR: 1.000000 ± 0.000000
-Top10 recall: 0.020000 ± 0.000000
-Top10 precision: 1.000000 ± 0.000000
-NDCG@10: 1.000000 ± 0.000000
-Top50 recall: 0.091200 ± 0.004817
-Top50 precision: 0.912000 ± 0.048166
-NDCG@50: 0.930823 ± 0.036972
-Top100 recall: 0.164400 ± 0.006229
-Top100 precision: 0.822000 ± 0.031145
-NDCG@100: 0.854986 ± 0.027858
-Top150 recall: 0.229200 ± 0.013609
-Top150 precision: 0.764000 ± 0.045363
-NDCG@150: 0.802197 ± 0.037128
-Top200 recall: 0.287600 ± 0.010139
-Top200 precision: 0.719000 ± 0.025348
-NDCG@200: 0.760243 ± 0.023489
-Accuracy: 0.572000 ± 0.012470
-F1: 0.309894 ± 0.027283
-MCC: 0.220752 ± 0.033677
---------------------------------------------------------------------------------
-Model: qwen3-8b-kto
-Graph group: pyg_style
-Negative strategy: normal
-Negative ratio: 1:4
-Number of files: 5
-AUROC: 0.619092 ± 0.007409
-AUPRC: 0.347648 ± 0.009682
-NDCG: 0.832751 ± 0.011294
-MRR: 0.616667 ± 0.361325
-Top10 recall: 0.014800 ± 0.003633
-Top10 precision: 0.740000 ± 0.181659
-NDCG@10: 0.661806 ± 0.242192
-Top50 recall: 0.070400 ± 0.009317
-Top50 precision: 0.704000 ± 0.093167
-NDCG@50: 0.687115 ± 0.127031
-Top100 recall: 0.116000 ± 0.006633
-Top100 precision: 0.580000 ± 0.033166
-NDCG@100: 0.598470 ± 0.053901
-Top150 recall: 0.159200 ± 0.012853
-Top150 precision: 0.530667 ± 0.042843
-NDCG@150: 0.556230 ± 0.038482
-Top200 recall: 0.196800 ± 0.013971
-Top200 precision: 0.492000 ± 0.034928
-NDCG@200: 0.521533 ± 0.032551
-Accuracy: 0.799120 ± 0.003757
-F1: 0.273651 ± 0.026833
-MCC: 0.211596 ± 0.025298
---------------------------------------------------------------------------------
-Model: qwen3-8b-kto
-Graph group: pyg_style
-Negative strategy: normal
-Negative ratio: 1:9
-Number of files: 5
-AUROC: 0.623004 ± 0.006945
-AUPRC: 0.209814 ± 0.014717
-NDCG: 0.764265 ± 0.009053
-MRR: 0.466667 ± 0.320590
-Top10 recall: 0.011600 ± 0.002608
-Top10 precision: 0.580000 ± 0.130384
-NDCG@10: 0.493153 ± 0.149676
-Top50 recall: 0.056000 ± 0.007746
-Top50 precision: 0.560000 ± 0.077460
-NDCG@50: 0.539909 ± 0.084199
-Top100 recall: 0.092400 ± 0.012602
-Top100 precision: 0.462000 ± 0.063008
-NDCG@100: 0.472772 ± 0.062773
-Top150 recall: 0.115600 ± 0.013221
-Top150 precision: 0.385333 ± 0.044071
-NDCG@150: 0.411247 ± 0.047190
-Top200 recall: 0.140800 ± 0.012696
-Top200 precision: 0.352000 ± 0.031741
-NDCG@200: 0.380564 ± 0.035405
-Accuracy: 0.875920 ± 0.003604
-F1: 0.235733 ± 0.024780
-MCC: 0.177906 ± 0.025922
---------------------------------------------------------------------------------
-Model: qwen3-8b-sft
-Graph group: graph_unpresent
-Negative strategy: normal
-Negative ratio: 1:1
-Number of files: 5
 AUROC: 0.705560 ± 0.010121
 AUPRC: 0.723988 ± 0.011777
 NDCG: 0.950112 ± 0.003273
@@ -1707,7 +1371,7 @@ Accuracy: 0.615600 ± 0.007503
 F1: 0.447068 ± 0.009299
 MCC: 0.291845 ± 0.021154
 --------------------------------------------------------------------------------
-Model: qwen3-8b-sft
+Model: qwen3-8b-kto
 Graph group: graph_unpresent
 Negative strategy: normal
 Negative ratio: 1:4
@@ -1735,7 +1399,7 @@ Accuracy: 0.798800 ± 0.002742
 F1: 0.379169 ± 0.006469
 MCC: 0.277769 ± 0.008599
 --------------------------------------------------------------------------------
-Model: qwen3-8b-sft
+Model: qwen3-8b-kto
 Graph group: graph_unpresent
 Negative strategy: normal
 Negative ratio: 1:9
@@ -1763,7 +1427,7 @@ Accuracy: 0.861440 ± 0.003491
 F1: 0.310269 ± 0.005547
 MCC: 0.233337 ± 0.007037
 --------------------------------------------------------------------------------
-Model: qwen3-8b-sft
+Model: qwen3-8b-kto
 Graph group: pyg_style
 Negative strategy: degree_matched_head
 Negative ratio: 1:1
@@ -1791,7 +1455,7 @@ Accuracy: 0.599000 ± 0.010344
 F1: 0.386756 ± 0.024264
 MCC: 0.273941 ± 0.022833
 --------------------------------------------------------------------------------
-Model: qwen3-8b-sft
+Model: qwen3-8b-kto
 Graph group: pyg_style
 Negative strategy: degree_matched_head
 Negative ratio: 1:4
@@ -1819,7 +1483,7 @@ Accuracy: 0.805200 ± 0.004656
 F1: 0.342904 ± 0.023187
 MCC: 0.266966 ± 0.023913
 --------------------------------------------------------------------------------
-Model: qwen3-8b-sft
+Model: qwen3-8b-kto
 Graph group: pyg_style
 Negative strategy: degree_matched_head
 Negative ratio: 1:9
@@ -1847,7 +1511,7 @@ Accuracy: 0.875800 ± 0.001049
 F1: 0.291259 ± 0.016309
 MCC: 0.227506 ± 0.014669
 --------------------------------------------------------------------------------
-Model: qwen3-8b-sft
+Model: qwen3-8b-kto
 Graph group: pyg_style
 Negative strategy: degree_matched_tail
 Negative ratio: 1:1
@@ -1875,7 +1539,7 @@ Accuracy: 0.593800 ± 0.005357
 F1: 0.384398 ± 0.020413
 MCC: 0.255865 ± 0.007297
 --------------------------------------------------------------------------------
-Model: qwen3-8b-sft
+Model: qwen3-8b-kto
 Graph group: pyg_style
 Negative strategy: degree_matched_tail
 Negative ratio: 1:4
@@ -1903,7 +1567,7 @@ Accuracy: 0.802480 ± 0.004795
 F1: 0.338745 ± 0.020982
 MCC: 0.258637 ± 0.021682
 --------------------------------------------------------------------------------
-Model: qwen3-8b-sft
+Model: qwen3-8b-kto
 Graph group: pyg_style
 Negative strategy: degree_matched_tail
 Negative ratio: 1:9
@@ -1931,7 +1595,7 @@ Accuracy: 0.871320 ± 0.005170
 F1: 0.283638 ± 0.019454
 MCC: 0.215877 ± 0.021826
 --------------------------------------------------------------------------------
-Model: qwen3-8b-sft
+Model: qwen3-8b-kto
 Graph group: pyg_style
 Negative strategy: normal
 Negative ratio: 1:1
@@ -1959,7 +1623,7 @@ Accuracy: 0.593600 ± 0.008591
 F1: 0.381630 ± 0.024171
 MCC: 0.256833 ± 0.017111
 --------------------------------------------------------------------------------
-Model: qwen3-8b-sft
+Model: qwen3-8b-kto
 Graph group: pyg_style
 Negative strategy: normal
 Negative ratio: 1:4
@@ -1987,7 +1651,7 @@ Accuracy: 0.802720 ± 0.004330
 F1: 0.343213 ± 0.021784
 MCC: 0.261785 ± 0.021902
 --------------------------------------------------------------------------------
-Model: qwen3-8b-sft
+Model: qwen3-8b-kto
 Graph group: pyg_style
 Negative strategy: normal
 Negative ratio: 1:9
@@ -2014,4 +1678,340 @@ NDCG@200: 0.444486 ± 0.037196
 Accuracy: 0.872640 ± 0.006287
 F1: 0.284957 ± 0.020475
 MCC: 0.218510 ± 0.024182
+--------------------------------------------------------------------------------
+Model: qwen3-8b-sft
+Graph group: graph_unpresent
+Negative strategy: normal
+Negative ratio: 1:1
+Number of files: 5
+AUROC: 0.704972 ± 0.011366
+AUPRC: 0.726149 ± 0.010867
+NDCG: 0.949731 ± 0.003049
+MRR: 1.000000 ± 0.000000
+Top10 recall: 0.019200 ± 0.001095
+Top10 precision: 0.960000 ± 0.054772
+NDCG@10: 0.962085 ± 0.051918
+Top50 recall: 0.091600 ± 0.002966
+Top50 precision: 0.916000 ± 0.029665
+NDCG@50: 0.924719 ± 0.027288
+Top100 recall: 0.178000 ± 0.005831
+Top100 precision: 0.890000 ± 0.029155
+NDCG@100: 0.901456 ± 0.025148
+Top150 recall: 0.253600 ± 0.005177
+Top150 precision: 0.845333 ± 0.017256
+NDCG@150: 0.864447 ± 0.013819
+Top200 recall: 0.322800 ± 0.006419
+Top200 precision: 0.807000 ± 0.016047
+NDCG@200: 0.831114 ± 0.011879
+Accuracy: 0.599200 ± 0.005541
+F1: 0.375293 ± 0.009351
+MCC: 0.284610 ± 0.016501
+--------------------------------------------------------------------------------
+Model: qwen3-8b-sft
+Graph group: graph_unpresent
+Negative strategy: normal
+Negative ratio: 1:4
+Number of files: 5
+AUROC: 0.699312 ± 0.003070
+AUPRC: 0.435455 ± 0.010355
+NDCG: 0.872008 ± 0.004678
+MRR: 1.000000 ± 0.000000
+Top10 recall: 0.017200 ± 0.001095
+Top10 precision: 0.860000 ± 0.054772
+NDCG@10: 0.889134 ± 0.060263
+Top50 recall: 0.072800 ± 0.003033
+Top50 precision: 0.728000 ± 0.030332
+NDCG@50: 0.765256 ± 0.028439
+Top100 recall: 0.136000 ± 0.003742
+Top100 precision: 0.680000 ± 0.018708
+NDCG@100: 0.715142 ± 0.024967
+Top150 recall: 0.188400 ± 0.008649
+Top150 precision: 0.628000 ± 0.028829
+NDCG@150: 0.666404 ± 0.025587
+Top200 recall: 0.234400 ± 0.008414
+Top200 precision: 0.586000 ± 0.021036
+NDCG@200: 0.626739 ± 0.019366
+Accuracy: 0.814320 ± 0.003167
+F1: 0.343428 ± 0.009272
+MCC: 0.290383 ± 0.012995
+--------------------------------------------------------------------------------
+Model: qwen3-8b-sft
+Graph group: graph_unpresent
+Negative strategy: normal
+Negative ratio: 1:9
+Number of files: 5
+AUROC: 0.699788 ± 0.004709
+AUPRC: 0.278699 ± 0.009593
+NDCG: 0.808625 ± 0.006065
+MRR: 1.000000 ± 0.000000
+Top10 recall: 0.015600 ± 0.001673
+Top10 precision: 0.780000 ± 0.083666
+NDCG@10: 0.805571 ± 0.096080
+Top50 recall: 0.057200 ± 0.006573
+Top50 precision: 0.572000 ± 0.065727
+NDCG@50: 0.623198 ± 0.059886
+Top100 recall: 0.107200 ± 0.007430
+Top100 precision: 0.536000 ± 0.037148
+NDCG@100: 0.577179 ± 0.040822
+Top150 recall: 0.146800 ± 0.004817
+Top150 precision: 0.489333 ± 0.016055
+NDCG@150: 0.530882 ± 0.021835
+Top200 recall: 0.180400 ± 0.007403
+Top200 precision: 0.451000 ± 0.018507
+NDCG@200: 0.493321 ± 0.018987
+Accuracy: 0.883200 ± 0.003555
+F1: 0.290354 ± 0.010181
+MCC: 0.236596 ± 0.014074
+--------------------------------------------------------------------------------
+Model: qwen3-8b-sft
+Graph group: pyg_style
+Negative strategy: degree_matched_head
+Negative ratio: 1:1
+Number of files: 5
+AUROC: 0.674510 ± 0.009509
+AUPRC: 0.691060 ± 0.011218
+NDCG: 0.941529 ± 0.001503
+MRR: 1.000000 ± 0.000000
+Top10 recall: 0.018800 ± 0.001095
+Top10 precision: 0.940000 ± 0.054772
+NDCG@10: 0.950067 ± 0.048517
+Top50 recall: 0.086800 ± 0.004147
+Top50 precision: 0.868000 ± 0.041473
+NDCG@50: 0.887249 ± 0.029240
+Top100 recall: 0.169200 ± 0.004382
+Top100 precision: 0.846000 ± 0.021909
+NDCG@100: 0.862752 ± 0.015404
+Top150 recall: 0.243200 ± 0.010826
+Top150 precision: 0.810667 ± 0.036086
+NDCG@150: 0.831420 ± 0.024746
+Top200 recall: 0.304800 ± 0.007823
+Top200 precision: 0.762000 ± 0.019558
+NDCG@200: 0.790160 ± 0.014611
+Accuracy: 0.578200 ± 0.009628
+F1: 0.315646 ± 0.025009
+MCC: 0.243326 ± 0.023089
+--------------------------------------------------------------------------------
+Model: qwen3-8b-sft
+Graph group: pyg_style
+Negative strategy: degree_matched_head
+Negative ratio: 1:4
+Number of files: 5
+AUROC: 0.672403 ± 0.007721
+AUPRC: 0.382729 ± 0.012110
+NDCG: 0.847435 ± 0.007247
+MRR: 0.800000 ± 0.273861
+Top10 recall: 0.014000 ± 0.002449
+Top10 precision: 0.700000 ± 0.122474
+NDCG@10: 0.683184 ± 0.148641
+Top50 recall: 0.068000 ± 0.004000
+Top50 precision: 0.680000 ± 0.040000
+NDCG@50: 0.678359 ± 0.044090
+Top100 recall: 0.118800 ± 0.006419
+Top100 precision: 0.594000 ± 0.032094
+NDCG@100: 0.612704 ± 0.037139
+Top150 recall: 0.167600 ± 0.011261
+Top150 precision: 0.558667 ± 0.037535
+NDCG@150: 0.581025 ± 0.032146
+Top200 recall: 0.212800 ± 0.013461
+Top200 precision: 0.532000 ± 0.033653
+NDCG@200: 0.556250 ± 0.024829
+Accuracy: 0.806480 ± 0.005589
+F1: 0.285009 ± 0.029624
+MCC: 0.238238 ± 0.031125
+--------------------------------------------------------------------------------
+Model: qwen3-8b-sft
+Graph group: pyg_style
+Negative strategy: degree_matched_head
+Negative ratio: 1:9
+Number of files: 5
+AUROC: 0.670546 ± 0.008734
+AUPRC: 0.239729 ± 0.010131
+NDCG: 0.787023 ± 0.007250
+MRR: 0.800000 ± 0.273861
+Top10 recall: 0.015200 ± 0.001095
+Top10 precision: 0.760000 ± 0.054772
+NDCG@10: 0.734743 ± 0.072935
+Top50 recall: 0.054800 ± 0.007694
+Top50 precision: 0.548000 ± 0.076942
+NDCG@50: 0.578986 ± 0.079493
+Top100 recall: 0.092000 ± 0.005657
+Top100 precision: 0.460000 ± 0.028284
+NDCG@100: 0.499081 ± 0.029343
+Top150 recall: 0.125600 ± 0.008173
+Top150 precision: 0.418667 ± 0.027244
+NDCG@150: 0.457348 ± 0.028265
+Top200 recall: 0.154400 ± 0.012116
+Top200 precision: 0.386000 ± 0.030290
+NDCG@200: 0.424628 ± 0.027903
+Accuracy: 0.885120 ± 0.002587
+F1: 0.252392 ± 0.021482
+MCC: 0.207667 ± 0.019042
+--------------------------------------------------------------------------------
+Model: qwen3-8b-sft
+Graph group: pyg_style
+Negative strategy: degree_matched_tail
+Negative ratio: 1:1
+Number of files: 5
+AUROC: 0.621748 ± 0.006394
+AUPRC: 0.650403 ± 0.003160
+NDCG: 0.931553 ± 0.002967
+MRR: 1.000000 ± 0.000000
+Top10 recall: 0.018400 ± 0.002191
+Top10 precision: 0.920000 ± 0.109545
+NDCG@10: 0.922355 ± 0.106792
+Top50 recall: 0.087600 ± 0.004336
+Top50 precision: 0.876000 ± 0.043359
+NDCG@50: 0.887304 ± 0.044285
+Top100 recall: 0.163600 ± 0.005727
+Top100 precision: 0.818000 ± 0.028636
+NDCG@100: 0.838161 ± 0.025326
+Top150 recall: 0.226400 ± 0.006066
+Top150 precision: 0.754667 ± 0.020221
+NDCG@150: 0.785041 ± 0.022390
+Top200 recall: 0.286000 ± 0.003742
+Top200 precision: 0.715000 ± 0.009354
+NDCG@200: 0.748713 ± 0.007489
+Accuracy: 0.570600 ± 0.009762
+F1: 0.306239 ± 0.030286
+MCC: 0.217441 ± 0.021231
+--------------------------------------------------------------------------------
+Model: qwen3-8b-sft
+Graph group: pyg_style
+Negative strategy: degree_matched_tail
+Negative ratio: 1:4
+Number of files: 5
+AUROC: 0.625037 ± 0.008779
+AUPRC: 0.359536 ± 0.015951
+NDCG: 0.840375 ± 0.012856
+MRR: 0.640000 ± 0.350714
+Top10 recall: 0.016800 ± 0.003347
+Top10 precision: 0.840000 ± 0.167332
+NDCG@10: 0.768853 ± 0.237658
+Top50 recall: 0.070800 ± 0.006723
+Top50 precision: 0.708000 ± 0.067231
+NDCG@50: 0.717194 ± 0.108364
+Top100 recall: 0.118800 ± 0.009338
+Top100 precision: 0.594000 ± 0.046690
+NDCG@100: 0.626501 ± 0.063135
+Top150 recall: 0.165600 ± 0.011524
+Top150 precision: 0.552000 ± 0.038413
+NDCG@150: 0.586116 ± 0.046178
+Top200 recall: 0.200400 ± 0.009099
+Top200 precision: 0.501000 ± 0.022749
+NDCG@200: 0.540198 ± 0.035787
+Accuracy: 0.801920 ± 0.003913
+F1: 0.278746 ± 0.030514
+MCC: 0.221993 ± 0.026750
+--------------------------------------------------------------------------------
+Model: qwen3-8b-sft
+Graph group: pyg_style
+Negative strategy: degree_matched_tail
+Negative ratio: 1:9
+Number of files: 5
+AUROC: 0.625792 ± 0.006791
+AUPRC: 0.210263 ± 0.015336
+NDCG: 0.768501 ± 0.008253
+MRR: 0.800000 ± 0.273861
+Top10 recall: 0.010800 ± 0.002683
+Top10 precision: 0.540000 ± 0.134164
+NDCG@10: 0.549741 ± 0.156868
+Top50 recall: 0.053200 ± 0.009445
+Top50 precision: 0.532000 ± 0.094446
+NDCG@50: 0.541751 ± 0.051819
+Top100 recall: 0.088800 ± 0.012931
+Top100 precision: 0.444000 ± 0.064653
+NDCG@100: 0.471063 ± 0.042370
+Top150 recall: 0.116000 ± 0.017776
+Top150 precision: 0.386667 ± 0.059255
+NDCG@150: 0.420326 ± 0.045285
+Top200 recall: 0.140800 ± 0.022118
+Top200 precision: 0.352000 ± 0.055295
+NDCG@200: 0.387118 ± 0.043321
+Accuracy: 0.875160 ± 0.004248
+F1: 0.235443 ± 0.027165
+MCC: 0.176584 ± 0.029296
+--------------------------------------------------------------------------------
+Model: qwen3-8b-sft
+Graph group: pyg_style
+Negative strategy: normal
+Negative ratio: 1:1
+Number of files: 5
+AUROC: 0.616754 ± 0.003930
+AUPRC: 0.654938 ± 0.007729
+NDCG: 0.935216 ± 0.002481
+MRR: 1.000000 ± 0.000000
+Top10 recall: 0.020000 ± 0.000000
+Top10 precision: 1.000000 ± 0.000000
+NDCG@10: 1.000000 ± 0.000000
+Top50 recall: 0.091200 ± 0.004817
+Top50 precision: 0.912000 ± 0.048166
+NDCG@50: 0.930823 ± 0.036972
+Top100 recall: 0.164400 ± 0.006229
+Top100 precision: 0.822000 ± 0.031145
+NDCG@100: 0.854986 ± 0.027858
+Top150 recall: 0.229200 ± 0.013609
+Top150 precision: 0.764000 ± 0.045363
+NDCG@150: 0.802197 ± 0.037128
+Top200 recall: 0.287600 ± 0.010139
+Top200 precision: 0.719000 ± 0.025348
+NDCG@200: 0.760243 ± 0.023489
+Accuracy: 0.572000 ± 0.012470
+F1: 0.309894 ± 0.027283
+MCC: 0.220752 ± 0.033677
+--------------------------------------------------------------------------------
+Model: qwen3-8b-sft
+Graph group: pyg_style
+Negative strategy: normal
+Negative ratio: 1:4
+Number of files: 5
+AUROC: 0.619092 ± 0.007409
+AUPRC: 0.347648 ± 0.009682
+NDCG: 0.832751 ± 0.011294
+MRR: 0.616667 ± 0.361325
+Top10 recall: 0.014800 ± 0.003633
+Top10 precision: 0.740000 ± 0.181659
+NDCG@10: 0.661806 ± 0.242192
+Top50 recall: 0.070400 ± 0.009317
+Top50 precision: 0.704000 ± 0.093167
+NDCG@50: 0.687115 ± 0.127031
+Top100 recall: 0.116000 ± 0.006633
+Top100 precision: 0.580000 ± 0.033166
+NDCG@100: 0.598470 ± 0.053901
+Top150 recall: 0.159200 ± 0.012853
+Top150 precision: 0.530667 ± 0.042843
+NDCG@150: 0.556230 ± 0.038482
+Top200 recall: 0.196800 ± 0.013971
+Top200 precision: 0.492000 ± 0.034928
+NDCG@200: 0.521533 ± 0.032551
+Accuracy: 0.799120 ± 0.003757
+F1: 0.273651 ± 0.026833
+MCC: 0.211596 ± 0.025298
+--------------------------------------------------------------------------------
+Model: qwen3-8b-sft
+Graph group: pyg_style
+Negative strategy: normal
+Negative ratio: 1:9
+Number of files: 5
+AUROC: 0.623004 ± 0.006945
+AUPRC: 0.209814 ± 0.014717
+NDCG: 0.764265 ± 0.009053
+MRR: 0.466667 ± 0.320590
+Top10 recall: 0.011600 ± 0.002608
+Top10 precision: 0.580000 ± 0.130384
+NDCG@10: 0.493153 ± 0.149676
+Top50 recall: 0.056000 ± 0.007746
+Top50 precision: 0.560000 ± 0.077460
+NDCG@50: 0.539909 ± 0.084199
+Top100 recall: 0.092400 ± 0.012602
+Top100 precision: 0.462000 ± 0.063008
+NDCG@100: 0.472772 ± 0.062773
+Top150 recall: 0.115600 ± 0.013221
+Top150 precision: 0.385333 ± 0.044071
+NDCG@150: 0.411247 ± 0.047190
+Top200 recall: 0.140800 ± 0.012696
+Top200 precision: 0.352000 ± 0.031741
+NDCG@200: 0.380564 ± 0.035405
+Accuracy: 0.875920 ± 0.003604
+F1: 0.235733 ± 0.024780
+MCC: 0.177906 ± 0.025922
 --------------------------------------------------------------------------------
