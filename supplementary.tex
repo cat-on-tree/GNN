@@ -1,0 +1,656 @@
+\documentclass[pdflatex,sn-mathphys-num]{sn-jnl}
+
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{pdflscape}
+\usepackage{longtable}
+\usepackage{xcolor}
+
+\begin{document}
+
+\renewcommand{\thetable}{S\arabic{table}}
+
+\title[Supplementary Information]
+{Supplementary Information for ``COAL: A Clinical-Outcome-Aligned
+Learning Framework to Reconcile Biomedical Plausibility with
+Translational Evidence in AI-driven Drug Repurposing''}
+
+\maketitle
+
+\section*{Supplementary Results}
+
+This Supplementary Information provides complete results under
+degree-matched, standard relation-constrained, and inductive cold-start
+evaluation. Tables~S1 and S2 report degree-matched evaluation, in which
+the drug nodes in negative pairs were matched by degree to those in
+positive pairs. Tables~S3 and S4 report results using standard
+relation-constrained negative sampling.
+
+Tables~S5 and S6 provide an additional inductive cold-start analysis
+included in response to reviewer comments. In this setting, all test
+drug nodes were entirely absent from the training graph and therefore
+unseen during model training. For these nodes, the evaluated
+structure-based GNNs lacked drug-specific neighborhood representations.
+The cold-start analysis therefore focuses on semantic generalization
+by the LLM-based models and is not treated as a primary claim of the
+study.
+
+Overall ranking and classification metrics are reported separately
+from Top-\(K\) metrics to preserve readability. AUROC is reported only
+for the balanced 1:1 setting, whereas AUPRC is reported only for the
+imbalanced 1:4 and 1:9 settings. Non-applicable AUROC and AUPRC cells
+are left blank. Values are shown as mean \(\pm\) standard deviation over
+five evaluation runs.
+
+Within each evaluation ratio, the best mean value in each metric is
+shown in red boldface, and the second-best distinct mean value is shown
+in boldface. For Top-\(K\) results, ranking is performed separately for
+each ratio, cutoff, and metric. Rankings are based on mean values.
+
+Llama3-8B is included as an additional open-source baseline.
+Qwen3-235B-A22B is included as a model-scale reference rather than
+a compute-matched baseline.
+
+\clearpage
+\begin{landscape}
+\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{clccccccc}
+\caption{\textbf{Complete overall performance on degree-matched drug-node negative sets.} The drug nodes in negative pairs were matched by degree to those in positive pairs. AUROC is reported only for the balanced 1:1 setting, whereas AUPRC is reported only for the imbalanced 1:4 and 1:9 settings. Within each ratio, the best mean value is shown in red boldface and the second-best distinct mean value is shown in boldface. Values are mean \(\pm\) standard deviation over five runs.}
+\label{tab:s1_degree_overall}\\
+\toprule
+Ratio & Model & AUROC & AUPRC & NDCG & MRR & Accuracy & F1 & MCC \\
+\midrule
+\endfirsthead
+
+\multicolumn{9}{c}{Table \thetable\ continued}\\
+\toprule
+Ratio & Model & AUROC & AUPRC & NDCG & MRR & Accuracy & F1 & MCC \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{9}{r}{Continued on next page}\\
+\endfoot
+
+\bottomrule
+\endlastfoot
+1:1 & RGCN & \(0.496 \pm 0.014\) &  & \(0.855 \pm 0.010\) & \(0.667 \pm 0.312\) & \(0.514 \pm 0.014\) & \(0.536 \pm 0.008\) & \(0.027 \pm 0.028\) \\
+1:1 & TxGNN & \(0.565 \pm 0.020\) &  & \(0.874 \pm 0.010\) & \(0.473 \pm 0.313\) & \(0.543 \pm 0.017\) & \(0.429 \pm 0.021\) & \(0.093 \pm 0.037\) \\
+1:1 & Llama3-8B & \(0.663 \pm 0.015\) &  & \(0.941 \pm 0.006\) & \(\mathbf{0.900 \pm 0.224}\) & \(0.577 \pm 0.013\) & \(\mathbf{0.641 \pm 0.010}\) & \(0.164 \pm 0.027\) \\
+1:1 & Qwen3-8B & \(0.587 \pm 0.007\) &  & \(0.891 \pm 0.002\) & \(0.750 \pm 0.354\) & \(0.579 \pm 0.007\) & \(\textcolor{red}{\mathbf{0.644 \pm 0.007}}\) & \(0.170 \pm 0.015\) \\
+1:1 & Qwen3-8B-SFT & \(0.675 \pm 0.010\) &  & \(0.942 \pm 0.002\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) & \(0.578 \pm 0.010\) & \(0.316 \pm 0.025\) & \(0.243 \pm 0.023\) \\
+1:1 & Qwen3-8B-KTO & \(\mathbf{0.692 \pm 0.015}\) &  & \(\mathbf{0.945 \pm 0.002}\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) & \(\mathbf{0.599 \pm 0.010}\) & \(0.387 \pm 0.024\) & \(\mathbf{0.274 \pm 0.023}\) \\
+1:1 & Qwen3-235B-A22B$^{\dagger}$ & \(\textcolor{red}{\mathbf{0.702 \pm 0.013}}\) &  & \(\textcolor{red}{\mathbf{0.945 \pm 0.007}}\) & \(\mathbf{0.900 \pm 0.224}\) & \(\textcolor{red}{\mathbf{0.645 \pm 0.014}}\) & \(0.615 \pm 0.015\) & \(\textcolor{red}{\mathbf{0.294 \pm 0.029}}\) \\
+\midrule
+1:4 & RGCN &  & \(0.186 \pm 0.006\) & \(0.725 \pm 0.007\) & \(0.186 \pm 0.104\) & \(0.476 \pm 0.013\) & \(0.300 \pm 0.003\) & \(0.013 \pm 0.010\) \\
+1:4 & TxGNN &  & \(0.223 \pm 0.008\) & \(0.748 \pm 0.005\) & \(0.125 \pm 0.046\) & \(0.659 \pm 0.013\) & \(0.288 \pm 0.017\) & \(0.073 \pm 0.024\) \\
+1:4 & Llama3-8B &  & \(0.387 \pm 0.015\) & \(0.853 \pm 0.006\) & \(\textcolor{red}{\mathbf{0.900 \pm 0.224}}\) & \(0.467 \pm 0.008\) & \(\mathbf{0.363 \pm 0.006}\) & \(0.128 \pm 0.012\) \\
+1:4 & Qwen3-8B &  & \(0.234 \pm 0.005\) & \(0.767 \pm 0.003\) & \(0.529 \pm 0.437\) & \(0.464 \pm 0.010\) & \(0.363 \pm 0.006\) & \(0.126 \pm 0.013\) \\
+1:4 & Qwen3-8B-SFT &  & \(0.383 \pm 0.012\) & \(0.847 \pm 0.007\) & \(\mathbf{0.800 \pm 0.274}\) & \(\textcolor{red}{\mathbf{0.806 \pm 0.006}}\) & \(0.285 \pm 0.030\) & \(0.238 \pm 0.031\) \\
+1:4 & Qwen3-8B-KTO &  & \(\mathbf{0.403 \pm 0.013}\) & \(\mathbf{0.856 \pm 0.009}\) & \(0.767 \pm 0.325\) & \(\mathbf{0.805 \pm 0.005}\) & \(0.343 \pm 0.023\) & \(\textcolor{red}{\mathbf{0.267 \pm 0.024}}\) \\
+1:4 & Qwen3-235B-A22B$^{\dagger}$ &  & \(\textcolor{red}{\mathbf{0.413 \pm 0.019}}\) & \(\textcolor{red}{\mathbf{0.863 \pm 0.011}}\) & \(\textcolor{red}{\mathbf{0.900 \pm 0.224}}\) & \(0.690 \pm 0.009\) & \(\textcolor{red}{\mathbf{0.422 \pm 0.014}}\) & \(\mathbf{0.243 \pm 0.020}\) \\
+\midrule
+1:9 & RGCN &  & \(0.093 \pm 0.002\) & \(0.655 \pm 0.003\) & \(0.085 \pm 0.040\) & \(0.466 \pm 0.010\) & \(0.174 \pm 0.003\) & \(0.011 \pm 0.008\) \\
+1:9 & TxGNN &  & \(0.114 \pm 0.004\) & \(0.677 \pm 0.003\) & \(0.070 \pm 0.055\) & \(0.704 \pm 0.009\) & \(0.189 \pm 0.011\) & \(0.060 \pm 0.016\) \\
+1:9 & Llama3-8B &  & \(0.244 \pm 0.012\) & \(0.788 \pm 0.006\) & \(0.800 \pm 0.274\) & \(0.428 \pm 0.005\) & \(0.211 \pm 0.005\) & \(0.095 \pm 0.012\) \\
+1:9 & Qwen3-8B &  & \(0.120 \pm 0.003\) & \(0.692 \pm 0.002\) & \(0.190 \pm 0.113\) & \(0.429 \pm 0.008\) & \(0.211 \pm 0.004\) & \(0.096 \pm 0.009\) \\
+1:9 & Qwen3-8B-SFT &  & \(0.240 \pm 0.010\) & \(0.787 \pm 0.007\) & \(0.800 \pm 0.274\) & \(\textcolor{red}{\mathbf{0.885 \pm 0.003}}\) & \(0.252 \pm 0.021\) & \(\mathbf{0.208 \pm 0.019}\) \\
+1:9 & Qwen3-8B-KTO &  & \(\mathbf{0.259 \pm 0.011}\) & \(\mathbf{0.799 \pm 0.009}\) & \(\textcolor{red}{\mathbf{0.900 \pm 0.224}}\) & \(\mathbf{0.876 \pm 0.001}\) & \(\textcolor{red}{\mathbf{0.291 \pm 0.016}}\) & \(\textcolor{red}{\mathbf{0.228 \pm 0.015}}\) \\
+1:9 & Qwen3-235B-A22B$^{\dagger}$ &  & \(\textcolor{red}{\mathbf{0.264 \pm 0.018}}\) & \(\textcolor{red}{\mathbf{0.800 \pm 0.014}}\) & \(\mathbf{0.867 \pm 0.298}\) & \(0.703 \pm 0.011\) & \(\mathbf{0.277 \pm 0.011}\) & \(0.185 \pm 0.015\) \\
+\end{longtable}
+\end{landscape}
+
+
+\clearpage
+\begin{landscape}
+\scriptsize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{clcccc}
+\caption{\textbf{Complete Top-\(K\) performance on degree-matched drug-node negative sets.} Recall, precision, and NDCG are reported at \(K=10,50,100,150,\) and \(200\). Within each ratio and cutoff, the best mean value is shown in red boldface and the second-best distinct mean value is shown in boldface. Values are mean \(\pm\) standard deviation over five runs.}
+\label{tab:s2_degree_topk}\\
+\toprule
+Ratio & Model & \(K\) & Recall@\(K\) & Precision@\(K\) & NDCG@\(K\) \\
+\midrule
+\endfirsthead
+
+\multicolumn{6}{c}{Table \thetable\ continued}\\
+\toprule
+Ratio & Model & \(K\) & Recall@\(K\) & Precision@\(K\) & NDCG@\(K\) \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{6}{r}{Continued on next page}\\
+\endfoot
+
+\bottomrule
+\endlastfoot
+1:1 & RGCN & 10 & \(0.007 \pm 0.003\) & \(0.340 \pm 0.167\) & \(0.358 \pm 0.159\) \\
+ &  & 50 & \(0.038 \pm 0.006\) & \(0.384 \pm 0.062\) & \(0.377 \pm 0.074\) \\
+ &  & 100 & \(0.079 \pm 0.009\) & \(0.396 \pm 0.045\) & \(0.389 \pm 0.052\) \\
+ &  & 150 & \(0.118 \pm 0.008\) & \(0.395 \pm 0.026\) & \(0.390 \pm 0.037\) \\
+ &  & 200 & \(0.162 \pm 0.009\) & \(0.406 \pm 0.023\) & \(0.399 \pm 0.031\) \\
+\addlinespace[2pt]
+1:1 & TxGNN & 10 & \(0.008 \pm 0.002\) & \(0.400 \pm 0.122\) & \(0.356 \pm 0.147\) \\
+ &  & 50 & \(0.046 \pm 0.007\) & \(0.464 \pm 0.068\) & \(0.435 \pm 0.088\) \\
+ &  & 100 & \(0.099 \pm 0.013\) & \(0.494 \pm 0.064\) & \(0.468 \pm 0.066\) \\
+ &  & 150 & \(0.158 \pm 0.016\) & \(0.525 \pm 0.055\) & \(0.499 \pm 0.047\) \\
+ &  & 200 & \(0.216 \pm 0.017\) & \(0.541 \pm 0.043\) & \(0.516 \pm 0.040\) \\
+\addlinespace[2pt]
+1:1 & Llama3-8B & 10 & \(\textcolor{red}{\mathbf{0.019 \pm 0.001}}\) & \(\textcolor{red}{\mathbf{0.960 \pm 0.055}}\) & \(\mathbf{0.939 \pm 0.096}\) \\
+ &  & 50 & \(\mathbf{0.091 \pm 0.005}\) & \(\mathbf{0.908 \pm 0.050}\) & \(\mathbf{0.910 \pm 0.047}\) \\
+ &  & 100 & \(\mathbf{0.171 \pm 0.008}\) & \(\mathbf{0.856 \pm 0.042}\) & \(\mathbf{0.870 \pm 0.038}\) \\
+ &  & 150 & \(\mathbf{0.248 \pm 0.008}\) & \(\mathbf{0.825 \pm 0.025}\) & \(\mathbf{0.843 \pm 0.027}\) \\
+ &  & 200 & \(0.314 \pm 0.010\) & \(0.785 \pm 0.026\) & \(0.808 \pm 0.024\) \\
+\addlinespace[2pt]
+1:1 & Qwen3-8B & 10 & \(0.013 \pm 0.004\) & \(0.660 \pm 0.207\) & \(0.565 \pm 0.006\) \\
+ &  & 50 & \(0.058 \pm 0.007\) & \(0.580 \pm 0.075\) & \(0.565 \pm 0.006\) \\
+ &  & 100 & \(0.114 \pm 0.014\) & \(0.570 \pm 0.071\) & \(0.565 \pm 0.006\) \\
+ &  & 150 & \(0.171 \pm 0.016\) & \(0.571 \pm 0.054\) & \(0.565 \pm 0.006\) \\
+ &  & 200 & \(0.228 \pm 0.015\) & \(0.569 \pm 0.037\) & \(0.565 \pm 0.006\) \\
+\addlinespace[2pt]
+1:1 & Qwen3-8B-SFT & 10 & \(\mathbf{0.019 \pm 0.001}\) & \(\mathbf{0.940 \pm 0.055}\) & \(\textcolor{red}{\mathbf{0.950 \pm 0.049}}\) \\
+ &  & 50 & \(0.087 \pm 0.004\) & \(0.868 \pm 0.041\) & \(0.887 \pm 0.029\) \\
+ &  & 100 & \(0.169 \pm 0.004\) & \(0.846 \pm 0.022\) & \(0.863 \pm 0.015\) \\
+ &  & 150 & \(0.243 \pm 0.011\) & \(0.811 \pm 0.036\) & \(0.831 \pm 0.025\) \\
+ &  & 200 & \(0.305 \pm 0.008\) & \(0.762 \pm 0.020\) & \(0.790 \pm 0.015\) \\
+\addlinespace[2pt]
+1:1 & Qwen3-8B-KTO & 10 & \(0.018 \pm 0.003\) & \(0.920 \pm 0.130\) & \(0.932 \pm 0.110\) \\
+ &  & 50 & \(0.090 \pm 0.003\) & \(0.896 \pm 0.026\) & \(0.906 \pm 0.027\) \\
+ &  & 100 & \(0.170 \pm 0.008\) & \(0.852 \pm 0.041\) & \(0.869 \pm 0.032\) \\
+ &  & 150 & \(\textcolor{red}{\mathbf{0.248 \pm 0.007}}\) & \(\textcolor{red}{\mathbf{0.828 \pm 0.025}}\) & \(\textcolor{red}{\mathbf{0.846 \pm 0.013}}\) \\
+ &  & 200 & \(\textcolor{red}{\mathbf{0.319 \pm 0.006}}\) & \(\textcolor{red}{\mathbf{0.798 \pm 0.016}}\) & \(\textcolor{red}{\mathbf{0.820 \pm 0.015}}\) \\
+\addlinespace[2pt]
+1:1 & Qwen3-235B-A22B$^{\dagger}$ & 10 & \(\mathbf{0.019 \pm 0.001}\) & \(\mathbf{0.940 \pm 0.055}\) & \(0.915 \pm 0.095\) \\
+ &  & 50 & \(\textcolor{red}{\mathbf{0.094 \pm 0.003}}\) & \(\textcolor{red}{\mathbf{0.936 \pm 0.026}}\) & \(\textcolor{red}{\mathbf{0.930 \pm 0.039}}\) \\
+ &  & 100 & \(\textcolor{red}{\mathbf{0.172 \pm 0.007}}\) & \(\textcolor{red}{\mathbf{0.862 \pm 0.035}}\) & \(\textcolor{red}{\mathbf{0.876 \pm 0.039}}\) \\
+ &  & 150 & \(0.243 \pm 0.010\) & \(0.811 \pm 0.032\) & \(0.833 \pm 0.030\) \\
+ &  & 200 & \(\mathbf{0.315 \pm 0.011}\) & \(\mathbf{0.787 \pm 0.027}\) & \(\mathbf{0.810 \pm 0.024}\) \\
+\midrule
+1:4 & RGCN & 10 & \(0.002 \pm 0.001\) & \(0.100 \pm 0.071\) & \(0.082 \pm 0.058\) \\
+ &  & 50 & \(0.010 \pm 0.004\) & \(0.100 \pm 0.042\) & \(0.096 \pm 0.039\) \\
+ &  & 100 & \(0.024 \pm 0.006\) & \(0.122 \pm 0.032\) & \(0.114 \pm 0.033\) \\
+ &  & 150 & \(0.041 \pm 0.006\) & \(0.136 \pm 0.021\) & \(0.127 \pm 0.024\) \\
+ &  & 200 & \(0.057 \pm 0.006\) & \(0.143 \pm 0.014\) & \(0.134 \pm 0.015\) \\
+\addlinespace[2pt]
+1:4 & TxGNN & 10 & \(0.002 \pm 0.001\) & \(0.100 \pm 0.071\) & \(0.070 \pm 0.048\) \\
+ &  & 50 & \(0.017 \pm 0.005\) & \(0.168 \pm 0.046\) & \(0.142 \pm 0.038\) \\
+ &  & 100 & \(0.034 \pm 0.008\) & \(0.170 \pm 0.041\) & \(0.153 \pm 0.035\) \\
+ &  & 150 & \(0.052 \pm 0.009\) & \(0.172 \pm 0.030\) & \(0.159 \pm 0.029\) \\
+ &  & 200 & \(0.071 \pm 0.007\) & \(0.178 \pm 0.017\) & \(0.166 \pm 0.018\) \\
+\addlinespace[2pt]
+1:4 & Llama3-8B & 10 & \(0.015 \pm 0.002\) & \(0.740 \pm 0.114\) & \(\mathbf{0.770 \pm 0.127}\) \\
+ &  & 50 & \(\mathbf{0.069 \pm 0.008}\) & \(\mathbf{0.692 \pm 0.084}\) & \(\mathbf{0.714 \pm 0.075}\) \\
+ &  & 100 & \(\mathbf{0.124 \pm 0.010}\) & \(\mathbf{0.622 \pm 0.049}\) & \(\mathbf{0.653 \pm 0.049}\) \\
+ &  & 150 & \(0.172 \pm 0.012\) & \(0.573 \pm 0.041\) & \(\mathbf{0.608 \pm 0.042}\) \\
+ &  & 200 & \(\mathbf{0.214 \pm 0.014}\) & \(\mathbf{0.534 \pm 0.036}\) & \(0.571 \pm 0.037\) \\
+\addlinespace[2pt]
+1:4 & Qwen3-8B & 10 & \(0.005 \pm 0.003\) & \(0.240 \pm 0.134\) & \(0.243 \pm 0.006\) \\
+ &  & 50 & \(0.024 \pm 0.004\) & \(0.236 \pm 0.043\) & \(0.243 \pm 0.006\) \\
+ &  & 100 & \(0.052 \pm 0.008\) & \(0.258 \pm 0.038\) & \(0.243 \pm 0.006\) \\
+ &  & 150 & \(0.077 \pm 0.009\) & \(0.257 \pm 0.031\) & \(0.243 \pm 0.006\) \\
+ &  & 200 & \(0.107 \pm 0.010\) & \(0.268 \pm 0.026\) & \(0.243 \pm 0.006\) \\
+\addlinespace[2pt]
+1:4 & Qwen3-8B-SFT & 10 & \(0.014 \pm 0.002\) & \(0.700 \pm 0.122\) & \(0.683 \pm 0.149\) \\
+ &  & 50 & \(0.068 \pm 0.004\) & \(0.680 \pm 0.040\) & \(0.678 \pm 0.044\) \\
+ &  & 100 & \(0.119 \pm 0.006\) & \(0.594 \pm 0.032\) & \(0.613 \pm 0.037\) \\
+ &  & 150 & \(0.168 \pm 0.011\) & \(0.559 \pm 0.038\) & \(0.581 \pm 0.032\) \\
+ &  & 200 & \(0.213 \pm 0.013\) & \(0.532 \pm 0.034\) & \(0.556 \pm 0.025\) \\
+\addlinespace[2pt]
+1:4 & Qwen3-8B-KTO & 10 & \(\mathbf{0.016 \pm 0.003}\) & \(\mathbf{0.780 \pm 0.130}\) & \(0.758 \pm 0.176\) \\
+ &  & 50 & \(0.067 \pm 0.010\) & \(0.668 \pm 0.097\) & \(0.686 \pm 0.102\) \\
+ &  & 100 & \(0.120 \pm 0.006\) & \(0.600 \pm 0.030\) & \(0.627 \pm 0.041\) \\
+ &  & 150 & \(\mathbf{0.174 \pm 0.008}\) & \(\mathbf{0.579 \pm 0.028}\) & \(0.604 \pm 0.037\) \\
+ &  & 200 & \(\textcolor{red}{\mathbf{0.220 \pm 0.010}}\) & \(\textcolor{red}{\mathbf{0.549 \pm 0.026}}\) & \(\mathbf{0.576 \pm 0.024}\) \\
+\addlinespace[2pt]
+1:4 & Qwen3-235B-A22B$^{\dagger}$ & 10 & \(\textcolor{red}{\mathbf{0.017 \pm 0.003}}\) & \(\textcolor{red}{\mathbf{0.840 \pm 0.134}}\) & \(\textcolor{red}{\mathbf{0.838 \pm 0.151}}\) \\
+ &  & 50 & \(\textcolor{red}{\mathbf{0.074 \pm 0.007}}\) & \(\textcolor{red}{\mathbf{0.740 \pm 0.071}}\) & \(\textcolor{red}{\mathbf{0.764 \pm 0.085}}\) \\
+ &  & 100 & \(\textcolor{red}{\mathbf{0.129 \pm 0.012}}\) & \(\textcolor{red}{\mathbf{0.644 \pm 0.058}}\) & \(\textcolor{red}{\mathbf{0.683 \pm 0.071}}\) \\
+ &  & 150 & \(\textcolor{red}{\mathbf{0.175 \pm 0.013}}\) & \(\textcolor{red}{\mathbf{0.584 \pm 0.044}}\) & \(\textcolor{red}{\mathbf{0.627 \pm 0.055}}\) \\
+ &  & 200 & \(0.212 \pm 0.012\) & \(0.530 \pm 0.031\) & \(\textcolor{red}{\mathbf{0.577 \pm 0.043}}\) \\
+\midrule
+1:9 & RGCN & 10 & \(0.000 \pm 0.001\) & \(0.020 \pm 0.045\) & \(0.015 \pm 0.033\) \\
+ &  & 50 & \(0.005 \pm 0.002\) & \(0.048 \pm 0.023\) & \(0.042 \pm 0.019\) \\
+ &  & 100 & \(0.010 \pm 0.004\) & \(0.048 \pm 0.018\) & \(0.044 \pm 0.016\) \\
+ &  & 150 & \(0.016 \pm 0.006\) & \(0.055 \pm 0.021\) & \(0.050 \pm 0.019\) \\
+ &  & 200 & \(0.023 \pm 0.006\) & \(0.058 \pm 0.016\) & \(0.054 \pm 0.015\) \\
+\addlinespace[2pt]
+1:9 & TxGNN & 10 & \(0.000 \pm 0.001\) & \(0.020 \pm 0.045\) & \(0.016 \pm 0.035\) \\
+ &  & 50 & \(0.006 \pm 0.003\) & \(0.064 \pm 0.026\) & \(0.053 \pm 0.025\) \\
+ &  & 100 & \(0.016 \pm 0.006\) & \(0.080 \pm 0.032\) & \(0.069 \pm 0.030\) \\
+ &  & 150 & \(0.022 \pm 0.007\) & \(0.075 \pm 0.022\) & \(0.068 \pm 0.022\) \\
+ &  & 200 & \(0.034 \pm 0.008\) & \(0.084 \pm 0.020\) & \(0.076 \pm 0.019\) \\
+\addlinespace[2pt]
+1:9 & Llama3-8B & 10 & \(\mathbf{0.014 \pm 0.002}\) & \(\mathbf{0.680 \pm 0.110}\) & \(0.665 \pm 0.137\) \\
+ &  & 50 & \(\mathbf{0.056 \pm 0.004}\) & \(\mathbf{0.556 \pm 0.038}\) & \(0.577 \pm 0.031\) \\
+ &  & 100 & \(\mathbf{0.099 \pm 0.006}\) & \(\mathbf{0.494 \pm 0.030}\) & \(0.522 \pm 0.019\) \\
+ &  & 150 & \(\mathbf{0.138 \pm 0.008}\) & \(\mathbf{0.461 \pm 0.026}\) & \(\mathbf{0.490 \pm 0.011}\) \\
+ &  & 200 & \(\mathbf{0.163 \pm 0.009}\) & \(\mathbf{0.408 \pm 0.022}\) & \(0.443 \pm 0.011\) \\
+\addlinespace[2pt]
+1:9 & Qwen3-8B & 10 & \(0.003 \pm 0.002\) & \(0.160 \pm 0.114\) & \(0.125 \pm 0.003\) \\
+ &  & 50 & \(0.013 \pm 0.004\) & \(0.132 \pm 0.036\) & \(0.125 \pm 0.003\) \\
+ &  & 100 & \(0.026 \pm 0.008\) & \(0.130 \pm 0.041\) & \(0.125 \pm 0.003\) \\
+ &  & 150 & \(0.039 \pm 0.005\) & \(0.129 \pm 0.017\) & \(0.125 \pm 0.003\) \\
+ &  & 200 & \(0.048 \pm 0.009\) & \(0.120 \pm 0.023\) & \(0.125 \pm 0.003\) \\
+\addlinespace[2pt]
+1:9 & Qwen3-8B-SFT & 10 & \(\textcolor{red}{\mathbf{0.015 \pm 0.001}}\) & \(\textcolor{red}{\mathbf{0.760 \pm 0.055}}\) & \(\mathbf{0.735 \pm 0.073}\) \\
+ &  & 50 & \(0.055 \pm 0.008\) & \(0.548 \pm 0.077\) & \(0.579 \pm 0.079\) \\
+ &  & 100 & \(0.092 \pm 0.006\) & \(0.460 \pm 0.028\) & \(0.499 \pm 0.029\) \\
+ &  & 150 & \(0.126 \pm 0.008\) & \(0.419 \pm 0.027\) & \(0.457 \pm 0.028\) \\
+ &  & 200 & \(0.154 \pm 0.012\) & \(0.386 \pm 0.030\) & \(0.425 \pm 0.028\) \\
+\addlinespace[2pt]
+1:9 & Qwen3-8B-KTO & 10 & \(\textcolor{red}{\mathbf{0.015 \pm 0.002}}\) & \(\textcolor{red}{\mathbf{0.760 \pm 0.114}}\) & \(\textcolor{red}{\mathbf{0.764 \pm 0.143}}\) \\
+ &  & 50 & \(\mathbf{0.056 \pm 0.005}\) & \(\mathbf{0.556 \pm 0.048}\) & \(\mathbf{0.602 \pm 0.067}\) \\
+ &  & 100 & \(0.096 \pm 0.003\) & \(0.478 \pm 0.015\) & \(\mathbf{0.525 \pm 0.030}\) \\
+ &  & 150 & \(0.134 \pm 0.007\) & \(0.447 \pm 0.025\) & \(0.489 \pm 0.028\) \\
+ &  & 200 & \(\mathbf{0.163 \pm 0.007}\) & \(\mathbf{0.408 \pm 0.018}\) & \(\mathbf{0.451 \pm 0.023}\) \\
+\addlinespace[2pt]
+1:9 & Qwen3-235B-A22B$^{\dagger}$ & 10 & \(0.013 \pm 0.003\) & \(0.660 \pm 0.134\) & \(0.687 \pm 0.181\) \\
+ &  & 50 & \(\textcolor{red}{\mathbf{0.062 \pm 0.005}}\) & \(\textcolor{red}{\mathbf{0.616 \pm 0.046}}\) & \(\textcolor{red}{\mathbf{0.640 \pm 0.078}}\) \\
+ &  & 100 & \(\textcolor{red}{\mathbf{0.106 \pm 0.009}}\) & \(\textcolor{red}{\mathbf{0.532 \pm 0.043}}\) & \(\textcolor{red}{\mathbf{0.567 \pm 0.064}}\) \\
+ &  & 150 & \(\textcolor{red}{\mathbf{0.140 \pm 0.012}}\) & \(\textcolor{red}{\mathbf{0.467 \pm 0.039}}\) & \(\textcolor{red}{\mathbf{0.508 \pm 0.054}}\) \\
+ &  & 200 & \(\textcolor{red}{\mathbf{0.167 \pm 0.015}}\) & \(\textcolor{red}{\mathbf{0.418 \pm 0.039}}\) & \(\textcolor{red}{\mathbf{0.463 \pm 0.051}}\) \\
+\end{longtable}
+\end{landscape}
+
+
+\clearpage
+\begin{landscape}
+\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{clccccccc}
+\caption{\textbf{Complete overall performance on standard relation-constrained negative sets.} AUROC is reported only for the balanced 1:1 setting, whereas AUPRC is reported only for the imbalanced 1:4 and 1:9 settings. Within each ratio, the best mean value is shown in red boldface and the second-best distinct mean value is shown in boldface. Values are mean \(\pm\) standard deviation over five runs.}
+\label{tab:s3_normal_overall}\\
+\toprule
+Ratio & Model & AUROC & AUPRC & NDCG & MRR & Accuracy & F1 & MCC \\
+\midrule
+\endfirsthead
+
+\multicolumn{9}{c}{Table \thetable\ continued}\\
+\toprule
+Ratio & Model & AUROC & AUPRC & NDCG & MRR & Accuracy & F1 & MCC \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{9}{r}{Continued on next page}\\
+\endfoot
+
+\bottomrule
+\endlastfoot
+1:1 & RGCN & \(\textcolor{red}{\mathbf{0.723 \pm 0.009}}\) &  & \(0.943 \pm 0.002\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) & \(\textcolor{red}{\mathbf{0.648 \pm 0.010}}\) & \(0.615 \pm 0.010\) & \(\textcolor{red}{\mathbf{0.301 \pm 0.020}}\) \\
+1:1 & TxGNN & \(0.590 \pm 0.012\) &  & \(0.888 \pm 0.005\) & \(0.600 \pm 0.379\) & \(0.538 \pm 0.012\) & \(0.427 \pm 0.020\) & \(0.083 \pm 0.026\) \\
+1:1 & Llama3-8B & \(0.686 \pm 0.018\) &  & \(\textcolor{red}{\mathbf{0.948 \pm 0.003}}\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) & \(0.599 \pm 0.018\) & \(\mathbf{0.654 \pm 0.018}\) & \(0.208 \pm 0.038\) \\
+1:1 & Qwen3-8B & \(0.623 \pm 0.011\) &  & \(0.899 \pm 0.002\) & \(0.750 \pm 0.354\) & \(0.614 \pm 0.010\) & \(\textcolor{red}{\mathbf{0.664 \pm 0.010}}\) & \(0.239 \pm 0.021\) \\
+1:1 & Qwen3-8B-SFT & \(0.617 \pm 0.004\) &  & \(0.935 \pm 0.002\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) & \(0.572 \pm 0.012\) & \(0.310 \pm 0.027\) & \(0.221 \pm 0.034\) \\
+1:1 & Qwen3-8B-KTO & \(0.679 \pm 0.006\) &  & \(\mathbf{0.945 \pm 0.003}\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) & \(0.594 \pm 0.009\) & \(0.382 \pm 0.024\) & \(0.257 \pm 0.017\) \\
+1:1 & Qwen3-235B-A22B$^{\dagger}$ & \(\mathbf{0.707 \pm 0.012}\) &  & \(0.945 \pm 0.010\) & \(\mathbf{0.900 \pm 0.224}\) & \(\mathbf{0.648 \pm 0.005}\) & \(0.617 \pm 0.011\) & \(\mathbf{0.300 \pm 0.010}\) \\
+\midrule
+1:4 & RGCN &  & \(0.388 \pm 0.008\) & \(0.852 \pm 0.005\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) & \(0.695 \pm 0.007\) & \(\mathbf{0.425 \pm 0.009}\) & \(0.248 \pm 0.013\) \\
+1:4 & TxGNN &  & \(0.235 \pm 0.004\) & \(0.760 \pm 0.003\) & \(0.230 \pm 0.065\) & \(0.652 \pm 0.004\) & \(0.283 \pm 0.013\) & \(0.064 \pm 0.015\) \\
+1:4 & Llama3-8B &  & \(\textcolor{red}{\mathbf{0.425 \pm 0.013}}\) & \(\textcolor{red}{\mathbf{0.864 \pm 0.006}}\) & \(0.800 \pm 0.274\) & \(0.499 \pm 0.009\) & \(0.378 \pm 0.012\) & \(0.158 \pm 0.024\) \\
+1:4 & Qwen3-8B &  & \(0.255 \pm 0.008\) & \(0.779 \pm 0.004\) & \(0.575 \pm 0.411\) & \(0.525 \pm 0.010\) & \(0.391 \pm 0.010\) & \(0.185 \pm 0.019\) \\
+1:4 & Qwen3-8B-SFT &  & \(0.348 \pm 0.010\) & \(0.833 \pm 0.011\) & \(0.617 \pm 0.361\) & \(\mathbf{0.799 \pm 0.004}\) & \(0.274 \pm 0.027\) & \(0.212 \pm 0.025\) \\
+1:4 & Qwen3-8B-KTO &  & \(0.408 \pm 0.008\) & \(\mathbf{0.863 \pm 0.002}\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) & \(\textcolor{red}{\mathbf{0.803 \pm 0.004}}\) & \(0.343 \pm 0.022\) & \(\textcolor{red}{\mathbf{0.262 \pm 0.022}}\) \\
+1:4 & Qwen3-235B-A22B$^{\dagger}$ &  & \(\mathbf{0.415 \pm 0.013}\) & \(0.860 \pm 0.009\) & \(\mathbf{0.850 \pm 0.335}\) & \(0.696 \pm 0.007\) & \(\textcolor{red}{\mathbf{0.427 \pm 0.011}}\) & \(\mathbf{0.251 \pm 0.016}\) \\
+\midrule
+1:9 & RGCN &  & \(0.243 \pm 0.006\) & \(\mathbf{0.792 \pm 0.005}\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) & \(0.721 \pm 0.003\) & \(\textcolor{red}{\mathbf{0.287 \pm 0.005}}\) & \(\mathbf{0.199 \pm 0.007}\) \\
+1:9 & TxGNN &  & \(0.122 \pm 0.003\) & \(0.690 \pm 0.002\) & \(0.184 \pm 0.080\) & \(0.696 \pm 0.005\) & \(0.185 \pm 0.010\) & \(0.054 \pm 0.013\) \\
+1:9 & Llama3-8B &  & \(\textcolor{red}{\mathbf{0.275 \pm 0.016}}\) & \(\textcolor{red}{\mathbf{0.804 \pm 0.010}}\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) & \(0.479 \pm 0.008\) & \(0.226 \pm 0.006\) & \(0.126 \pm 0.013\) \\
+1:9 & Qwen3-8B &  & \(0.132 \pm 0.004\) & \(0.703 \pm 0.003\) & \(0.209 \pm 0.110\) & \(0.494 \pm 0.007\) & \(0.232 \pm 0.006\) & \(0.137 \pm 0.012\) \\
+1:9 & Qwen3-8B-SFT &  & \(0.210 \pm 0.015\) & \(0.764 \pm 0.009\) & \(0.467 \pm 0.321\) & \(\textcolor{red}{\mathbf{0.876 \pm 0.004}}\) & \(0.236 \pm 0.025\) & \(0.178 \pm 0.026\) \\
+1:9 & Qwen3-8B-KTO &  & \(0.256 \pm 0.019\) & \(0.791 \pm 0.008\) & \(\mathbf{0.633 \pm 0.342}\) & \(\mathbf{0.873 \pm 0.006}\) & \(\mathbf{0.285 \pm 0.020}\) & \(\textcolor{red}{\mathbf{0.219 \pm 0.024}}\) \\
+1:9 & Qwen3-235B-A22B$^{\dagger}$ &  & \(\mathbf{0.257 \pm 0.020}\) & \(0.790 \pm 0.015\) & \(0.557 \pm 0.407\) & \(0.706 \pm 0.008\) & \(0.278 \pm 0.009\) & \(0.188 \pm 0.014\) \\
+\end{longtable}
+\end{landscape}
+
+
+\clearpage
+\begin{landscape}
+\scriptsize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{clcccc}
+\caption{\textbf{Complete Top-\(K\) performance on standard relation-constrained negative sets.} Recall, precision, and NDCG are reported at \(K=10,50,100,150,\) and \(200\). Within each ratio and cutoff, the best mean value is shown in red boldface and the second-best distinct mean value is shown in boldface. Values are mean \(\pm\) standard deviation over five runs.}
+\label{tab:s4_normal_topk}\\
+\toprule
+Ratio & Model & \(K\) & Recall@\(K\) & Precision@\(K\) & NDCG@\(K\) \\
+\midrule
+\endfirsthead
+
+\multicolumn{6}{c}{Table \thetable\ continued}\\
+\toprule
+Ratio & Model & \(K\) & Recall@\(K\) & Precision@\(K\) & NDCG@\(K\) \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{6}{r}{Continued on next page}\\
+\endfoot
+
+\bottomrule
+\endlastfoot
+1:1 & RGCN & 10 & \(0.018 \pm 0.002\) & \(0.900 \pm 0.100\) & \(0.912 \pm 0.080\) \\
+ &  & 50 & \(0.087 \pm 0.003\) & \(0.868 \pm 0.033\) & \(0.882 \pm 0.018\) \\
+ &  & 100 & \(0.163 \pm 0.006\) & \(0.814 \pm 0.032\) & \(0.836 \pm 0.020\) \\
+ &  & 150 & \(0.227 \pm 0.007\) & \(0.756 \pm 0.024\) & \(0.786 \pm 0.018\) \\
+ &  & 200 & \(0.292 \pm 0.008\) & \(0.730 \pm 0.019\) & \(0.760 \pm 0.012\) \\
+\addlinespace[2pt]
+1:1 & TxGNN & 10 & \(0.011 \pm 0.002\) & \(0.540 \pm 0.114\) & \(0.521 \pm 0.177\) \\
+ &  & 50 & \(0.057 \pm 0.006\) & \(0.568 \pm 0.058\) & \(0.556 \pm 0.039\) \\
+ &  & 100 & \(0.110 \pm 0.005\) & \(0.550 \pm 0.027\) & \(0.547 \pm 0.010\) \\
+ &  & 150 & \(0.163 \pm 0.005\) & \(0.544 \pm 0.017\) & \(0.543 \pm 0.009\) \\
+ &  & 200 & \(0.219 \pm 0.007\) & \(0.547 \pm 0.017\) & \(0.546 \pm 0.011\) \\
+\addlinespace[2pt]
+1:1 & Llama3-8B & 10 & \(\mathbf{0.020 \pm 0.001}\) & \(\mathbf{0.980 \pm 0.045}\) & \(\mathbf{0.987 \pm 0.028}\) \\
+ &  & 50 & \(\mathbf{0.091 \pm 0.003}\) & \(\mathbf{0.912 \pm 0.033}\) & \(0.928 \pm 0.028\) \\
+ &  & 100 & \(\textcolor{red}{\mathbf{0.175 \pm 0.005}}\) & \(\textcolor{red}{\mathbf{0.876 \pm 0.025}}\) & \(\textcolor{red}{\mathbf{0.895 \pm 0.022}}\) \\
+ &  & 150 & \(\textcolor{red}{\mathbf{0.249 \pm 0.001}}\) & \(\textcolor{red}{\mathbf{0.831 \pm 0.004}}\) & \(\textcolor{red}{\mathbf{0.855 \pm 0.004}}\) \\
+ &  & 200 & \(\textcolor{red}{\mathbf{0.321 \pm 0.008}}\) & \(\textcolor{red}{\mathbf{0.803 \pm 0.021}}\) & \(\textcolor{red}{\mathbf{0.829 \pm 0.017}}\) \\
+\addlinespace[2pt]
+1:1 & Qwen3-8B & 10 & \(0.013 \pm 0.004\) & \(0.640 \pm 0.195\) & \(0.597 \pm 0.007\) \\
+ &  & 50 & \(0.060 \pm 0.005\) & \(0.600 \pm 0.051\) & \(0.597 \pm 0.007\) \\
+ &  & 100 & \(0.117 \pm 0.008\) & \(0.586 \pm 0.040\) & \(0.597 \pm 0.007\) \\
+ &  & 150 & \(0.178 \pm 0.005\) & \(0.595 \pm 0.015\) & \(0.597 \pm 0.007\) \\
+ &  & 200 & \(0.240 \pm 0.005\) & \(0.600 \pm 0.014\) & \(0.597 \pm 0.007\) \\
+\addlinespace[2pt]
+1:1 & Qwen3-8B-SFT & 10 & \(\textcolor{red}{\mathbf{0.020 \pm 0.000}}\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) \\
+ &  & 50 & \(\mathbf{0.091 \pm 0.005}\) & \(\mathbf{0.912 \pm 0.048}\) & \(\mathbf{0.931 \pm 0.037}\) \\
+ &  & 100 & \(0.164 \pm 0.006\) & \(0.822 \pm 0.031\) & \(0.855 \pm 0.028\) \\
+ &  & 150 & \(0.229 \pm 0.014\) & \(0.764 \pm 0.045\) & \(0.802 \pm 0.037\) \\
+ &  & 200 & \(0.288 \pm 0.010\) & \(0.719 \pm 0.025\) & \(0.760 \pm 0.023\) \\
+\addlinespace[2pt]
+1:1 & Qwen3-8B-KTO & 10 & \(\mathbf{0.020 \pm 0.001}\) & \(\mathbf{0.980 \pm 0.045}\) & \(0.972 \pm 0.062\) \\
+ &  & 50 & \(\textcolor{red}{\mathbf{0.093 \pm 0.003}}\) & \(\textcolor{red}{\mathbf{0.928 \pm 0.033}}\) & \(\textcolor{red}{\mathbf{0.937 \pm 0.026}}\) \\
+ &  & 100 & \(0.173 \pm 0.009\) & \(0.866 \pm 0.043\) & \(\mathbf{0.886 \pm 0.036}\) \\
+ &  & 150 & \(0.242 \pm 0.006\) & \(0.808 \pm 0.021\) & \(0.837 \pm 0.017\) \\
+ &  & 200 & \(0.310 \pm 0.008\) & \(0.776 \pm 0.021\) & \(0.807 \pm 0.014\) \\
+\addlinespace[2pt]
+1:1 & Qwen3-235B-A22B$^{\dagger}$ & 10 & \(0.018 \pm 0.002\) & \(0.920 \pm 0.084\) & \(0.904 \pm 0.129\) \\
+ &  & 50 & \(\mathbf{0.091 \pm 0.008}\) & \(\mathbf{0.912 \pm 0.076}\) & \(0.908 \pm 0.092\) \\
+ &  & 100 & \(\mathbf{0.174 \pm 0.004}\) & \(\mathbf{0.870 \pm 0.019}\) & \(0.877 \pm 0.042\) \\
+ &  & 150 & \(\mathbf{0.246 \pm 0.005}\) & \(\mathbf{0.821 \pm 0.017}\) & \(\mathbf{0.838 \pm 0.033}\) \\
+ &  & 200 & \(\mathbf{0.318 \pm 0.007}\) & \(\mathbf{0.794 \pm 0.017}\) & \(\mathbf{0.814 \pm 0.030}\) \\
+\midrule
+1:4 & RGCN & 10 & \(0.014 \pm 0.003\) & \(0.700 \pm 0.141\) & \(0.724 \pm 0.138\) \\
+ &  & 50 & \(0.067 \pm 0.004\) & \(0.672 \pm 0.039\) & \(0.695 \pm 0.042\) \\
+ &  & 100 & \(0.117 \pm 0.009\) & \(0.584 \pm 0.047\) & \(0.619 \pm 0.047\) \\
+ &  & 150 & \(0.154 \pm 0.011\) & \(0.512 \pm 0.038\) & \(0.555 \pm 0.034\) \\
+ &  & 200 & \(0.186 \pm 0.010\) & \(0.465 \pm 0.026\) & \(0.511 \pm 0.019\) \\
+\addlinespace[2pt]
+1:4 & TxGNN & 10 & \(0.004 \pm 0.002\) & \(0.180 \pm 0.084\) & \(0.147 \pm 0.068\) \\
+ &  & 50 & \(0.024 \pm 0.006\) & \(0.236 \pm 0.059\) & \(0.213 \pm 0.049\) \\
+ &  & 100 & \(0.046 \pm 0.009\) & \(0.228 \pm 0.044\) & \(0.216 \pm 0.042\) \\
+ &  & 150 & \(0.065 \pm 0.005\) & \(0.216 \pm 0.018\) & \(0.209 \pm 0.019\) \\
+ &  & 200 & \(0.092 \pm 0.007\) & \(0.230 \pm 0.018\) & \(0.221 \pm 0.017\) \\
+\addlinespace[2pt]
+1:4 & Llama3-8B & 10 & \(\textcolor{red}{\mathbf{0.016 \pm 0.002}}\) & \(\textcolor{red}{\mathbf{0.820 \pm 0.110}}\) & \(\mathbf{0.783 \pm 0.144}\) \\
+ &  & 50 & \(\textcolor{red}{\mathbf{0.077 \pm 0.004}}\) & \(\textcolor{red}{\mathbf{0.768 \pm 0.039}}\) & \(\textcolor{red}{\mathbf{0.768 \pm 0.050}}\) \\
+ &  & 100 & \(\textcolor{red}{\mathbf{0.136 \pm 0.008}}\) & \(\textcolor{red}{\mathbf{0.680 \pm 0.042}}\) & \(\textcolor{red}{\mathbf{0.702 \pm 0.036}}\) \\
+ &  & 150 & \(\textcolor{red}{\mathbf{0.190 \pm 0.008}}\) & \(\textcolor{red}{\mathbf{0.635 \pm 0.026}}\) & \(\textcolor{red}{\mathbf{0.661 \pm 0.026}}\) \\
+ &  & 200 & \(\textcolor{red}{\mathbf{0.236 \pm 0.012}}\) & \(\textcolor{red}{\mathbf{0.589 \pm 0.029}}\) & \(\textcolor{red}{\mathbf{0.621 \pm 0.024}}\) \\
+\addlinespace[2pt]
+1:4 & Qwen3-8B & 10 & \(0.007 \pm 0.002\) & \(0.340 \pm 0.114\) & \(0.270 \pm 0.009\) \\
+ &  & 50 & \(0.028 \pm 0.005\) & \(0.276 \pm 0.048\) & \(0.270 \pm 0.009\) \\
+ &  & 100 & \(0.062 \pm 0.010\) & \(0.308 \pm 0.049\) & \(0.270 \pm 0.009\) \\
+ &  & 150 & \(0.092 \pm 0.014\) & \(0.308 \pm 0.048\) & \(0.270 \pm 0.009\) \\
+ &  & 200 & \(0.117 \pm 0.014\) & \(0.293 \pm 0.034\) & \(0.270 \pm 0.009\) \\
+\addlinespace[2pt]
+1:4 & Qwen3-8B-SFT & 10 & \(0.015 \pm 0.004\) & \(0.740 \pm 0.182\) & \(0.662 \pm 0.242\) \\
+ &  & 50 & \(0.070 \pm 0.009\) & \(0.704 \pm 0.093\) & \(0.687 \pm 0.127\) \\
+ &  & 100 & \(0.116 \pm 0.007\) & \(0.580 \pm 0.033\) & \(0.598 \pm 0.054\) \\
+ &  & 150 & \(0.159 \pm 0.013\) & \(0.531 \pm 0.043\) & \(0.556 \pm 0.038\) \\
+ &  & 200 & \(0.197 \pm 0.014\) & \(0.492 \pm 0.035\) & \(0.522 \pm 0.033\) \\
+\addlinespace[2pt]
+1:4 & Qwen3-8B-KTO & 10 & \(\mathbf{0.016 \pm 0.003}\) & \(\mathbf{0.800 \pm 0.158}\) & \(\textcolor{red}{\mathbf{0.832 \pm 0.122}}\) \\
+ &  & 50 & \(\mathbf{0.073 \pm 0.003}\) & \(\mathbf{0.732 \pm 0.030}\) & \(\mathbf{0.762 \pm 0.025}\) \\
+ &  & 100 & \(\mathbf{0.129 \pm 0.005}\) & \(\mathbf{0.644 \pm 0.023}\) & \(\mathbf{0.684 \pm 0.009}\) \\
+ &  & 150 & \(\mathbf{0.177 \pm 0.012}\) & \(\mathbf{0.591 \pm 0.038}\) & \(\mathbf{0.633 \pm 0.022}\) \\
+ &  & 200 & \(\mathbf{0.220 \pm 0.010}\) & \(\mathbf{0.551 \pm 0.025}\) & \(\mathbf{0.594 \pm 0.017}\) \\
+\addlinespace[2pt]
+1:4 & Qwen3-235B-A22B$^{\dagger}$ & 10 & \(0.015 \pm 0.003\) & \(0.740 \pm 0.152\) & \(0.725 \pm 0.198\) \\
+ &  & 50 & \(0.071 \pm 0.006\) & \(0.712 \pm 0.056\) & \(0.712 \pm 0.057\) \\
+ &  & 100 & \(\mathbf{0.129 \pm 0.005}\) & \(\mathbf{0.644 \pm 0.023}\) & \(0.661 \pm 0.044\) \\
+ &  & 150 & \(0.177 \pm 0.009\) & \(0.589 \pm 0.030\) & \(0.615 \pm 0.042\) \\
+ &  & 200 & \(0.217 \pm 0.011\) & \(0.543 \pm 0.027\) & \(0.575 \pm 0.030\) \\
+\midrule
+1:9 & RGCN & 10 & \(\textcolor{red}{\mathbf{0.013 \pm 0.004}}\) & \(\textcolor{red}{\mathbf{0.640 \pm 0.219}}\) & \(\textcolor{red}{\mathbf{0.694 \pm 0.189}}\) \\
+ &  & 50 & \(0.057 \pm 0.003\) & \(0.568 \pm 0.033\) & \(\mathbf{0.607 \pm 0.046}\) \\
+ &  & 100 & \(0.090 \pm 0.009\) & \(0.448 \pm 0.043\) & \(0.500 \pm 0.044\) \\
+ &  & 150 & \(0.116 \pm 0.006\) & \(0.385 \pm 0.019\) & \(0.439 \pm 0.024\) \\
+ &  & 200 & \(0.141 \pm 0.010\) & \(0.352 \pm 0.024\) & \(0.403 \pm 0.015\) \\
+\addlinespace[2pt]
+1:9 & TxGNN & 10 & \(0.003 \pm 0.002\) & \(0.140 \pm 0.114\) & \(0.111 \pm 0.082\) \\
+ &  & 50 & \(0.012 \pm 0.002\) & \(0.120 \pm 0.020\) & \(0.112 \pm 0.022\) \\
+ &  & 100 & \(0.023 \pm 0.005\) & \(0.116 \pm 0.025\) & \(0.112 \pm 0.020\) \\
+ &  & 150 & \(0.038 \pm 0.004\) & \(0.125 \pm 0.012\) & \(0.121 \pm 0.010\) \\
+ &  & 200 & \(0.048 \pm 0.008\) & \(0.121 \pm 0.020\) & \(0.118 \pm 0.018\) \\
+\addlinespace[2pt]
+1:9 & Llama3-8B & 10 & \(\mathbf{0.012 \pm 0.003}\) & \(\mathbf{0.620 \pm 0.164}\) & \(\mathbf{0.664 \pm 0.164}\) \\
+ &  & 50 & \(\textcolor{red}{\mathbf{0.062 \pm 0.005}}\) & \(\textcolor{red}{\mathbf{0.616 \pm 0.052}}\) & \(\textcolor{red}{\mathbf{0.632 \pm 0.064}}\) \\
+ &  & 100 & \(\textcolor{red}{\mathbf{0.111 \pm 0.007}}\) & \(\textcolor{red}{\mathbf{0.554 \pm 0.034}}\) & \(\textcolor{red}{\mathbf{0.580 \pm 0.029}}\) \\
+ &  & 150 & \(\textcolor{red}{\mathbf{0.150 \pm 0.011}}\) & \(\textcolor{red}{\mathbf{0.499 \pm 0.037}}\) & \(\textcolor{red}{\mathbf{0.531 \pm 0.029}}\) \\
+ &  & 200 & \(\textcolor{red}{\mathbf{0.180 \pm 0.014}}\) & \(\textcolor{red}{\mathbf{0.450 \pm 0.034}}\) & \(\textcolor{red}{\mathbf{0.487 \pm 0.029}}\) \\
+\addlinespace[2pt]
+1:9 & Qwen3-8B & 10 & \(0.004 \pm 0.004\) & \(0.220 \pm 0.179\) & \(0.141 \pm 0.004\) \\
+ &  & 50 & \(0.016 \pm 0.004\) & \(0.156 \pm 0.043\) & \(0.141 \pm 0.004\) \\
+ &  & 100 & \(0.031 \pm 0.007\) & \(0.156 \pm 0.036\) & \(0.141 \pm 0.004\) \\
+ &  & 150 & \(0.044 \pm 0.007\) & \(0.147 \pm 0.024\) & \(0.141 \pm 0.004\) \\
+ &  & 200 & \(0.058 \pm 0.012\) & \(0.144 \pm 0.029\) & \(0.141 \pm 0.004\) \\
+\addlinespace[2pt]
+1:9 & Qwen3-8B-SFT & 10 & \(0.012 \pm 0.003\) & \(0.580 \pm 0.130\) & \(0.493 \pm 0.150\) \\
+ &  & 50 & \(0.056 \pm 0.008\) & \(0.560 \pm 0.077\) & \(0.540 \pm 0.084\) \\
+ &  & 100 & \(0.092 \pm 0.013\) & \(0.462 \pm 0.063\) & \(0.473 \pm 0.063\) \\
+ &  & 150 & \(0.116 \pm 0.013\) & \(0.385 \pm 0.044\) & \(0.411 \pm 0.047\) \\
+ &  & 200 & \(0.141 \pm 0.013\) & \(0.352 \pm 0.032\) & \(0.381 \pm 0.035\) \\
+\addlinespace[2pt]
+1:9 & Qwen3-8B-KTO & 10 & \(\mathbf{0.012 \pm 0.003}\) & \(\mathbf{0.620 \pm 0.164}\) & \(0.571 \pm 0.136\) \\
+ &  & 50 & \(\mathbf{0.060 \pm 0.004}\) & \(\mathbf{0.600 \pm 0.042}\) & \(0.595 \pm 0.047\) \\
+ &  & 100 & \(0.100 \pm 0.011\) & \(0.498 \pm 0.054\) & \(\mathbf{0.519 \pm 0.038}\) \\
+ &  & 150 & \(\mathbf{0.137 \pm 0.014}\) & \(\mathbf{0.457 \pm 0.046}\) & \(\mathbf{0.483 \pm 0.040}\) \\
+ &  & 200 & \(0.166 \pm 0.017\) & \(0.414 \pm 0.042\) & \(\mathbf{0.444 \pm 0.037}\) \\
+\addlinespace[2pt]
+1:9 & Qwen3-235B-A22B$^{\dagger}$ & 10 & \(\mathbf{0.012 \pm 0.002}\) & \(\mathbf{0.620 \pm 0.110}\) & \(0.562 \pm 0.173\) \\
+ &  & 50 & \(0.052 \pm 0.005\) & \(0.516 \pm 0.054\) & \(0.515 \pm 0.084\) \\
+ &  & 100 & \(\mathbf{0.100 \pm 0.009}\) & \(\mathbf{0.500 \pm 0.043}\) & \(0.504 \pm 0.064\) \\
+ &  & 150 & \(0.136 \pm 0.010\) & \(0.455 \pm 0.032\) & \(0.469 \pm 0.050\) \\
+ &  & 200 & \(\mathbf{0.168 \pm 0.014}\) & \(\mathbf{0.421 \pm 0.034}\) & \(0.440 \pm 0.046\) \\
+\end{longtable}
+\end{landscape}
+
+
+\clearpage
+\begin{landscape}
+\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{clccccccc}
+\caption{\textbf{Complete overall performance on inductive cold-start test sets.} All test drug nodes were absent from the training graph and unseen during model training. Only LLM-based models are reported because this supplementary analysis evaluates semantic generalization to unseen drugs. AUROC is reported only for 1:1, whereas AUPRC is reported only for 1:4 and 1:9. Within each ratio, the best mean value is shown in red boldface and the second-best distinct mean value is shown in boldface. Values are mean \(\pm\) standard deviation over five runs.}
+\label{tab:s5_cold_overall}\\
+\toprule
+Ratio & Model & AUROC & AUPRC & NDCG & MRR & Accuracy & F1 & MCC \\
+\midrule
+\endfirsthead
+
+\multicolumn{9}{c}{Table \thetable\ continued}\\
+\toprule
+Ratio & Model & AUROC & AUPRC & NDCG & MRR & Accuracy & F1 & MCC \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{9}{r}{Continued on next page}\\
+\endfoot
+
+\bottomrule
+\endlastfoot
+1:1 & Llama3-8B & \(0.681 \pm 0.007\) &  & \(0.944 \pm 0.004\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) & \(0.608 \pm 0.007\) & \(\textcolor{red}{\mathbf{0.665 \pm 0.006}}\) & \(0.231 \pm 0.016\) \\
+1:1 & Qwen3-8B & \(0.600 \pm 0.008\) &  & \(0.893 \pm 0.002\) & \(\mathbf{0.867 \pm 0.298}\) & \(0.590 \pm 0.009\) & \(\mathbf{0.662 \pm 0.005}\) & \(0.198 \pm 0.018\) \\
+1:1 & Qwen3-8B-SFT & \(0.705 \pm 0.011\) &  & \(0.950 \pm 0.003\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) & \(0.599 \pm 0.006\) & \(0.375 \pm 0.009\) & \(0.285 \pm 0.017\) \\
+1:1 & Qwen3-8B-KTO & \(\mathbf{0.706 \pm 0.010}\) &  & \(\mathbf{0.950 \pm 0.003}\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) & \(\mathbf{0.616 \pm 0.008}\) & \(0.447 \pm 0.009\) & \(\mathbf{0.292 \pm 0.021}\) \\
+1:1 & Qwen3-235B-A22B$^{\dagger}$ & \(\textcolor{red}{\mathbf{0.728 \pm 0.014}}\) &  & \(\textcolor{red}{\mathbf{0.954 \pm 0.004}}\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) & \(\textcolor{red}{\mathbf{0.664 \pm 0.011}}\) & \(0.647 \pm 0.007\) & \(\textcolor{red}{\mathbf{0.330 \pm 0.023}}\) \\
+\midrule
+1:4 & Llama3-8B &  & \(0.405 \pm 0.010\) & \(0.859 \pm 0.008\) & \(\mathbf{0.800 \pm 0.274}\) & \(0.501 \pm 0.011\) & \(\mathbf{0.383 \pm 0.007}\) & \(0.170 \pm 0.015\) \\
+1:4 & Qwen3-8B &  & \(0.239 \pm 0.002\) & \(0.770 \pm 0.001\) & \(0.344 \pm 0.378\) & \(0.457 \pm 0.003\) & \(0.372 \pm 0.001\) & \(0.147 \pm 0.003\) \\
+1:4 & Qwen3-8B-SFT &  & \(\mathbf{0.435 \pm 0.010}\) & \(\mathbf{0.872 \pm 0.005}\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) & \(\textcolor{red}{\mathbf{0.814 \pm 0.003}}\) & \(0.343 \pm 0.009\) & \(\textcolor{red}{\mathbf{0.290 \pm 0.013}}\) \\
+1:4 & Qwen3-8B-KTO &  & \(0.429 \pm 0.011\) & \(0.869 \pm 0.004\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) & \(\mathbf{0.799 \pm 0.003}\) & \(0.379 \pm 0.006\) & \(\mathbf{0.278 \pm 0.009}\) \\
+1:4 & Qwen3-235B-A22B$^{\dagger}$ &  & \(\textcolor{red}{\mathbf{0.469 \pm 0.022}}\) & \(\textcolor{red}{\mathbf{0.884 \pm 0.008}}\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) & \(0.692 \pm 0.013\) & \(\textcolor{red}{\mathbf{0.444 \pm 0.010}}\) & \(0.273 \pm 0.015\) \\
+\midrule
+1:9 & Llama3-8B &  & \(0.253 \pm 0.006\) & \(0.796 \pm 0.005\) & \(\mathbf{0.900 \pm 0.224}\) & \(0.463 \pm 0.003\) & \(0.225 \pm 0.002\) & \(0.127 \pm 0.004\) \\
+1:9 & Qwen3-8B &  & \(0.123 \pm 0.001\) & \(0.694 \pm 0.001\) & \(0.118 \pm 0.099\) & \(0.412 \pm 0.003\) & \(0.214 \pm 0.001\) & \(0.107 \pm 0.002\) \\
+1:9 & Qwen3-8B-SFT &  & \(\mathbf{0.279 \pm 0.010}\) & \(\mathbf{0.809 \pm 0.006}\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) & \(\textcolor{red}{\mathbf{0.883 \pm 0.004}}\) & \(\mathbf{0.290 \pm 0.010}\) & \(\textcolor{red}{\mathbf{0.237 \pm 0.014}}\) \\
+1:9 & Qwen3-8B-KTO &  & \(0.276 \pm 0.009\) & \(0.808 \pm 0.005\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) & \(\mathbf{0.861 \pm 0.003}\) & \(\textcolor{red}{\mathbf{0.310 \pm 0.006}}\) & \(\mathbf{0.233 \pm 0.007}\) \\
+1:9 & Qwen3-235B-A22B$^{\dagger}$ &  & \(\textcolor{red}{\mathbf{0.311 \pm 0.011}}\) & \(\textcolor{red}{\mathbf{0.825 \pm 0.006}}\) & \(\textcolor{red}{\mathbf{1.000 \pm 0.000}}\) & \(0.698 \pm 0.008\) & \(0.290 \pm 0.005\) & \(0.207 \pm 0.006\) \\
+\end{longtable}
+\end{landscape}
+
+
+\clearpage
+\begin{landscape}
+\scriptsize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{clcccc}
+\caption{\textbf{Complete Top-\(K\) performance on inductive cold-start test sets.} All test drug nodes were absent from the training graph and unseen during model training. Only LLM-based models are reported. Recall, precision, and NDCG are evaluated at \(K=10,50,100,150,\) and \(200\). Within each ratio and cutoff, the best mean value is shown in red boldface and the second-best distinct mean value is shown in boldface. Values are mean \(\pm\) standard deviation over five runs.}
+\label{tab:s6_cold_topk}\\
+\toprule
+Ratio & Model & \(K\) & Recall@\(K\) & Precision@\(K\) & NDCG@\(K\) \\
+\midrule
+\endfirsthead
+
+\multicolumn{6}{c}{Table \thetable\ continued}\\
+\toprule
+Ratio & Model & \(K\) & Recall@\(K\) & Precision@\(K\) & NDCG@\(K\) \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{6}{r}{Continued on next page}\\
+\endfoot
+
+\bottomrule
+\endlastfoot
+1:1 & Llama3-8B & 10 & \(\mathbf{0.019 \pm 0.002}\) & \(\mathbf{0.960 \pm 0.089}\) & \(0.957 \pm 0.097\) \\
+ &  & 50 & \(0.089 \pm 0.003\) & \(0.888 \pm 0.033\) & \(0.904 \pm 0.039\) \\
+ &  & 100 & \(0.171 \pm 0.003\) & \(0.856 \pm 0.015\) & \(0.874 \pm 0.014\) \\
+ &  & 150 & \(0.248 \pm 0.006\) & \(0.825 \pm 0.018\) & \(0.846 \pm 0.013\) \\
+ &  & 200 & \(0.311 \pm 0.011\) & \(0.778 \pm 0.028\) & \(0.806 \pm 0.021\) \\
+\addlinespace[2pt]
+1:1 & Qwen3-8B & 10 & \(0.013 \pm 0.004\) & \(0.640 \pm 0.195\) & \(0.571 \pm 0.006\) \\
+ &  & 50 & \(0.060 \pm 0.006\) & \(0.596 \pm 0.064\) & \(0.571 \pm 0.006\) \\
+ &  & 100 & \(0.113 \pm 0.013\) & \(0.564 \pm 0.065\) & \(0.571 \pm 0.006\) \\
+ &  & 150 & \(0.171 \pm 0.015\) & \(0.571 \pm 0.050\) & \(0.571 \pm 0.006\) \\
+ &  & 200 & \(0.225 \pm 0.011\) & \(0.563 \pm 0.028\) & \(0.571 \pm 0.006\) \\
+\addlinespace[2pt]
+1:1 & Qwen3-8B-SFT & 10 & \(\mathbf{0.019 \pm 0.001}\) & \(\mathbf{0.960 \pm 0.055}\) & \(0.962 \pm 0.052\) \\
+ &  & 50 & \(\mathbf{0.092 \pm 0.003}\) & \(\mathbf{0.916 \pm 0.030}\) & \(\mathbf{0.925 \pm 0.027}\) \\
+ &  & 100 & \(\mathbf{0.178 \pm 0.006}\) & \(\mathbf{0.890 \pm 0.029}\) & \(\mathbf{0.901 \pm 0.025}\) \\
+ &  & 150 & \(\mathbf{0.254 \pm 0.005}\) & \(\mathbf{0.845 \pm 0.017}\) & \(\mathbf{0.864 \pm 0.014}\) \\
+ &  & 200 & \(\mathbf{0.323 \pm 0.006}\) & \(\mathbf{0.807 \pm 0.016}\) & \(\mathbf{0.831 \pm 0.012}\) \\
+\addlinespace[2pt]
+1:1 & Qwen3-8B-KTO & 10 & \(\textcolor{red}{\mathbf{0.020 \pm 0.001}}\) & \(\textcolor{red}{\mathbf{0.980 \pm 0.045}}\) & \(\textcolor{red}{\mathbf{0.983 \pm 0.038}}\) \\
+ &  & 50 & \(\textcolor{red}{\mathbf{0.092 \pm 0.003}}\) & \(\textcolor{red}{\mathbf{0.924 \pm 0.026}}\) & \(\textcolor{red}{\mathbf{0.937 \pm 0.024}}\) \\
+ &  & 100 & \(0.174 \pm 0.004\) & \(0.872 \pm 0.019\) & \(0.893 \pm 0.019\) \\
+ &  & 150 & \(0.248 \pm 0.003\) & \(0.827 \pm 0.012\) & \(0.853 \pm 0.011\) \\
+ &  & 200 & \(0.318 \pm 0.007\) & \(0.794 \pm 0.018\) & \(0.823 \pm 0.017\) \\
+\addlinespace[2pt]
+1:1 & Qwen3-235B-A22B$^{\dagger}$ & 10 & \(\mathbf{0.019 \pm 0.001}\) & \(\mathbf{0.960 \pm 0.055}\) & \(\mathbf{0.968 \pm 0.044}\) \\
+ &  & 50 & \(0.091 \pm 0.004\) & \(0.908 \pm 0.036\) & \(0.923 \pm 0.035\) \\
+ &  & 100 & \(\textcolor{red}{\mathbf{0.182 \pm 0.002}}\) & \(\textcolor{red}{\mathbf{0.910 \pm 0.012}}\) & \(\textcolor{red}{\mathbf{0.919 \pm 0.015}}\) \\
+ &  & 150 & \(\textcolor{red}{\mathbf{0.261 \pm 0.003}}\) & \(\textcolor{red}{\mathbf{0.869 \pm 0.011}}\) & \(\textcolor{red}{\mathbf{0.886 \pm 0.010}}\) \\
+ &  & 200 & \(\textcolor{red}{\mathbf{0.325 \pm 0.004}}\) & \(\textcolor{red}{\mathbf{0.813 \pm 0.010}}\) & \(\textcolor{red}{\mathbf{0.839 \pm 0.008}}\) \\
+\midrule
+1:4 & Llama3-8B & 10 & \(\mathbf{0.017 \pm 0.002}\) & \(\mathbf{0.840 \pm 0.089}\) & \(0.815 \pm 0.142\) \\
+ &  & 50 & \(\mathbf{0.075 \pm 0.005}\) & \(\mathbf{0.748 \pm 0.046}\) & \(0.760 \pm 0.039\) \\
+ &  & 100 & \(0.133 \pm 0.005\) & \(0.664 \pm 0.026\) & \(0.691 \pm 0.023\) \\
+ &  & 150 & \(0.183 \pm 0.005\) & \(0.609 \pm 0.015\) & \(0.643 \pm 0.021\) \\
+ &  & 200 & \(0.223 \pm 0.005\) & \(0.558 \pm 0.012\) & \(0.597 \pm 0.018\) \\
+\addlinespace[2pt]
+1:4 & Qwen3-8B & 10 & \(0.004 \pm 0.002\) & \(0.200 \pm 0.100\) & \(0.248 \pm 0.002\) \\
+ &  & 50 & \(0.024 \pm 0.006\) & \(0.244 \pm 0.057\) & \(0.248 \pm 0.002\) \\
+ &  & 100 & \(0.052 \pm 0.007\) & \(0.260 \pm 0.034\) & \(0.248 \pm 0.002\) \\
+ &  & 150 & \(0.076 \pm 0.007\) & \(0.255 \pm 0.025\) & \(0.248 \pm 0.002\) \\
+ &  & 200 & \(0.104 \pm 0.010\) & \(0.261 \pm 0.025\) & \(0.248 \pm 0.002\) \\
+\addlinespace[2pt]
+1:4 & Qwen3-8B-SFT & 10 & \(\textcolor{red}{\mathbf{0.017 \pm 0.001}}\) & \(\textcolor{red}{\mathbf{0.860 \pm 0.055}}\) & \(\mathbf{0.889 \pm 0.060}\) \\
+ &  & 50 & \(0.073 \pm 0.003\) & \(0.728 \pm 0.030\) & \(\mathbf{0.765 \pm 0.028}\) \\
+ &  & 100 & \(\mathbf{0.136 \pm 0.004}\) & \(\mathbf{0.680 \pm 0.019}\) & \(\mathbf{0.715 \pm 0.025}\) \\
+ &  & 150 & \(\mathbf{0.188 \pm 0.009}\) & \(\mathbf{0.628 \pm 0.029}\) & \(\mathbf{0.666 \pm 0.026}\) \\
+ &  & 200 & \(\mathbf{0.234 \pm 0.008}\) & \(\mathbf{0.586 \pm 0.021}\) & \(\mathbf{0.627 \pm 0.019}\) \\
+\addlinespace[2pt]
+1:4 & Qwen3-8B-KTO & 10 & \(0.016 \pm 0.001\) & \(0.800 \pm 0.071\) & \(0.834 \pm 0.042\) \\
+ &  & 50 & \(0.073 \pm 0.007\) & \(0.728 \pm 0.074\) & \(0.761 \pm 0.056\) \\
+ &  & 100 & \(0.134 \pm 0.005\) & \(0.670 \pm 0.025\) & \(0.705 \pm 0.024\) \\
+ &  & 150 & \(0.184 \pm 0.006\) & \(0.612 \pm 0.020\) & \(0.652 \pm 0.020\) \\
+ &  & 200 & \(0.234 \pm 0.002\) & \(0.584 \pm 0.005\) & \(0.623 \pm 0.008\) \\
+\addlinespace[2pt]
+1:4 & Qwen3-235B-A22B$^{\dagger}$ & 10 & \(\textcolor{red}{\mathbf{0.017 \pm 0.002}}\) & \(\textcolor{red}{\mathbf{0.860 \pm 0.114}}\) & \(\textcolor{red}{\mathbf{0.897 \pm 0.083}}\) \\
+ &  & 50 & \(\textcolor{red}{\mathbf{0.082 \pm 0.006}}\) & \(\textcolor{red}{\mathbf{0.824 \pm 0.059}}\) & \(\textcolor{red}{\mathbf{0.848 \pm 0.054}}\) \\
+ &  & 100 & \(\textcolor{red}{\mathbf{0.148 \pm 0.010}}\) & \(\textcolor{red}{\mathbf{0.738 \pm 0.049}}\) & \(\textcolor{red}{\mathbf{0.773 \pm 0.048}}\) \\
+ &  & 150 & \(\textcolor{red}{\mathbf{0.212 \pm 0.011}}\) & \(\textcolor{red}{\mathbf{0.707 \pm 0.036}}\) & \(\textcolor{red}{\mathbf{0.740 \pm 0.037}}\) \\
+ &  & 200 & \(\textcolor{red}{\mathbf{0.258 \pm 0.006}}\) & \(\textcolor{red}{\mathbf{0.644 \pm 0.016}}\) & \(\textcolor{red}{\mathbf{0.685 \pm 0.022}}\) \\
+\midrule
+1:9 & Llama3-8B & 10 & \(0.013 \pm 0.002\) & \(0.660 \pm 0.089\) & \(0.701 \pm 0.040\) \\
+ &  & 50 & \(0.059 \pm 0.004\) & \(0.588 \pm 0.041\) & \(0.623 \pm 0.040\) \\
+ &  & 100 & \(0.102 \pm 0.005\) & \(0.510 \pm 0.024\) & \(0.550 \pm 0.027\) \\
+ &  & 150 & \(0.141 \pm 0.008\) & \(0.469 \pm 0.026\) & \(0.509 \pm 0.028\) \\
+ &  & 200 & \(0.168 \pm 0.004\) & \(0.420 \pm 0.009\) & \(0.463 \pm 0.012\) \\
+\addlinespace[2pt]
+1:9 & Qwen3-8B & 10 & \(0.002 \pm 0.003\) & \(0.100 \pm 0.141\) & \(0.128 \pm 0.001\) \\
+ &  & 50 & \(0.014 \pm 0.004\) & \(0.140 \pm 0.037\) & \(0.128 \pm 0.001\) \\
+ &  & 100 & \(0.027 \pm 0.007\) & \(0.134 \pm 0.034\) & \(0.128 \pm 0.001\) \\
+ &  & 150 & \(0.041 \pm 0.006\) & \(0.137 \pm 0.020\) & \(0.128 \pm 0.001\) \\
+ &  & 200 & \(0.053 \pm 0.006\) & \(0.133 \pm 0.015\) & \(0.128 \pm 0.001\) \\
+\addlinespace[2pt]
+1:9 & Qwen3-8B-SFT & 10 & \(\mathbf{0.016 \pm 0.002}\) & \(\mathbf{0.780 \pm 0.084}\) & \(\mathbf{0.806 \pm 0.096}\) \\
+ &  & 50 & \(0.057 \pm 0.007\) & \(0.572 \pm 0.066\) & \(0.623 \pm 0.060\) \\
+ &  & 100 & \(0.107 \pm 0.007\) & \(0.536 \pm 0.037\) & \(0.577 \pm 0.041\) \\
+ &  & 150 & \(\mathbf{0.147 \pm 0.005}\) & \(\mathbf{0.489 \pm 0.016}\) & \(\mathbf{0.531 \pm 0.022}\) \\
+ &  & 200 & \(\mathbf{0.180 \pm 0.007}\) & \(\mathbf{0.451 \pm 0.019}\) & \(\mathbf{0.493 \pm 0.019}\) \\
+\addlinespace[2pt]
+1:9 & Qwen3-8B-KTO & 10 & \(0.015 \pm 0.001\) & \(0.760 \pm 0.055\) & \(0.800 \pm 0.058\) \\
+ &  & 50 & \(\mathbf{0.062 \pm 0.005}\) & \(\mathbf{0.624 \pm 0.050}\) & \(\mathbf{0.660 \pm 0.049}\) \\
+ &  & 100 & \(\mathbf{0.110 \pm 0.006}\) & \(\mathbf{0.550 \pm 0.032}\) & \(\mathbf{0.589 \pm 0.037}\) \\
+ &  & 150 & \(0.143 \pm 0.005\) & \(0.477 \pm 0.017\) & \(0.524 \pm 0.021\) \\
+ &  & 200 & \(0.172 \pm 0.005\) & \(0.430 \pm 0.013\) & \(0.478 \pm 0.009\) \\
+\addlinespace[2pt]
+1:9 & Qwen3-235B-A22B$^{\dagger}$ & 10 & \(\textcolor{red}{\mathbf{0.016 \pm 0.002}}\) & \(\textcolor{red}{\mathbf{0.820 \pm 0.084}}\) & \(\textcolor{red}{\mathbf{0.866 \pm 0.067}}\) \\
+ &  & 50 & \(\textcolor{red}{\mathbf{0.066 \pm 0.004}}\) & \(\textcolor{red}{\mathbf{0.656 \pm 0.043}}\) & \(\textcolor{red}{\mathbf{0.715 \pm 0.040}}\) \\
+ &  & 100 & \(\textcolor{red}{\mathbf{0.111 \pm 0.008}}\) & \(\textcolor{red}{\mathbf{0.556 \pm 0.042}}\) & \(\textcolor{red}{\mathbf{0.616 \pm 0.041}}\) \\
+ &  & 150 & \(\textcolor{red}{\mathbf{0.165 \pm 0.009}}\) & \(\textcolor{red}{\mathbf{0.549 \pm 0.030}}\) & \(\textcolor{red}{\mathbf{0.595 \pm 0.033}}\) \\
+ &  & 200 & \(\textcolor{red}{\mathbf{0.206 \pm 0.008}}\) & \(\textcolor{red}{\mathbf{0.516 \pm 0.021}}\) & \(\textcolor{red}{\mathbf{0.561 \pm 0.026}}\) \\
+\end{longtable}
+\end{landscape}
+
+
+\clearpage
+
+\section*{Notes on model comparisons}
+
+Llama3-8B and Qwen3-8B are evaluated as open-source foundation-model
+baselines. Qwen3-8B-SFT denotes the model after supervised fine-tuning
+for KG-grounded drug-repurposing reasoning. Qwen3-8B-KTO denotes the
+subsequent model aligned with Phase III clinical-development outcomes
+using Kahneman--Tversky Optimization. Qwen3-235B-A22B is included only
+as a large-scale open-source reference and is not considered a
+compute-matched baseline.
+
+The degree-matched evaluation controls drug-node degree and does not
+assume that sampled negative drug--disease pairs represent clinical
+failures. Phase III trial successes and failures are used as alignment
+signals during KTO training and are conceptually distinct from the
+negative pairs used in benchmark evaluation.
+
+The inductive cold-start analysis is provided as a supplementary
+response to reviewer interest and does not form part of the primary
+clinical-outcome-alignment claim. Because the test drug nodes were
+absent from the training graph, the evaluated structure-based GNNs
+lacked drug-specific neighborhood representations for these nodes.
+The cold-start tables therefore report only LLM-based models.
+
+\end{document}
